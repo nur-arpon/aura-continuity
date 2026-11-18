@@ -1,0 +1,55 @@
+[package]
+name = "aura-pc"
+version = "1.0.0"
+description = "Aura for PC - Continuity for your PC: unlock, auto-lock and handoff in one tray app"
+authors = ["SpaceZ"]
+edition = "2021"
+
+[lib]
+name = "aura_pc_lib"
+path = "src/lib.rs"
+
+[[bin]]
+name = "aura-pc"
+path = "src/main.rs"
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+# Microsoft Store edition: no sign-in-screen unlock, no add-ons (see src/edition.rs). Default build = direct (full) edition.
+store = []
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon", "image-png"] }
+tauri-plugin-single-instance = "2"
+tauri-plugin-notification = "2"
+tauri-winrt-notification = "0.8"
+tauri-plugin-log = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-global-shortcut = "2"
+log = "0.4"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+winreg = "0.56"
+# The three old apps, used as libraries by path (not copied).
+continuity-autolock = { path = "../../autolock/src-tauri" }
+handoff = { path = "../../handoff/src-tauri" }
+aura-service = { path = "../../aura-link/service" }
+aura-link = { path = "../../aura-link/rust" }
+continuity-helper = { path = "../../unlock-stage2/helper" }
+unlock-pc = { path = "../../unlock-stage1/pc" }
+hex = "0.4"
+windows-core = "0.62"
+base64 = "0.22"
+qrcode = { version = "0.14", default-features = false, features = ["svg"] }
+windows = { version = "0.62", features = ["Win32_System_SystemInformation", "Win32_UI_Input_KeyboardAndMouse", "Win32_UI_Shell", "Win32_UI_Shell_PropertiesSystem", "Win32_System_Com", "Win32_System_Com_StructuredStorage", "Win32_System_Variant", "Win32_Foundation", "Win32_Security_Credentials", "Win32_NetworkManagement_IpHelper", "Win32_NetworkManagement_Ndis", "Win32_NetworkManagement_WiFi", "Win32_Networking_WinSock", "Win32_System_Power", "Win32_Devices_Bluetooth", "Win32_Media_Audio", "Win32_Media_Audio_Endpoints", "Win32_Devices_FunctionDiscovery", "UI_Notifications", "Data_Xml_Dom", "Foundation_Collections", "Foundation", "ApplicationModel", "Win32_Storage_Packaging_Appx"] }
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

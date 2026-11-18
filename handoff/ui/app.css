@@ -1,0 +1,40 @@
+/* Handoff-only layout. Tokens and controls come from tokens.css and
+   components.css (shared Continuity design system, see design\README.md). */
+
+/* Shortcut recorder: shows the keys as keycaps; click or Enter to change. */
+.hotkey {
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px; flex: none;
+  min-width: 152px; height: var(--h-control); padding: 0 var(--sp-3);
+  background: var(--input-bg); color: var(--text);
+  border: 1px solid var(--border); border-bottom-color: var(--border-strong); border-radius: var(--r-control);
+  cursor: pointer; font: var(--type-body);
+  transition: border-color var(--dur-instant) linear, background-color var(--dur-instant) linear;
+}
+.hotkey:hover { background: var(--surface-2); }
+.hotkey .plus { color: var(--text-3); font-size: 12px; }
+.hotkey.recording {
+  border-color: var(--primary); border-bottom-width: 2px; color: var(--primary);
+  background: var(--primary-tint);
+}
+.hotkey.recording .hint { animation: blink 1.2s var(--ease-move) infinite alternate; }
+@keyframes blink { from { opacity: 1; } to { opacity: 0.55; } }
+.hotkey.nudge .hint { color: var(--warning); }
+
+.row-error {
+  display: flex; gap: var(--sp-2); align-items: flex-start;
+  padding: 0 var(--sp-4) var(--sp-3) calc(var(--sp-4) + 20px + var(--sp-4));
+  font: var(--type-caption); color: var(--warning);
+}
+
+.version { font: var(--type-caption); color: var(--text-3); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 420px) {
+  .app-header, .app-content, .app-footer { padding-inline: var(--sp-4); }
+  .row:has(.select), .row:has(.hotkey) { flex-wrap: wrap; }
+  .row:has(.select) .row-text, .row:has(.hotkey) .row-text { flex-basis: calc(100% - 36px); }
+  .row .select, .row .hotkey { margin-left: 36px; }
+}
+@media (prefers-reduced-motion: reduce) { .hotkey.recording .hint { animation: none; } }
+
+.row.drop { border: 1px dashed var(--stroke-strong, rgba(128,128,128,.5)); border-radius: 8px; }
+.row.drop.hot { background: var(--accent-subtle, rgba(80,140,255,.12)); border-style: solid; }

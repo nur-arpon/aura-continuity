@@ -1,0 +1,7 @@
+<resources>
+    <!-- Brand name in ONE place: launcher label, tile, complication and in-app title all use it. -->
+    <string name="app_name">Aura</string>
+    <string name="app_descriptor">Continuity for your PC</string>
+    <string name="feature_unlock">Aura Unlock</string>
+    <string name="tile_desc">PC status and Lock PC</string>
+</resources>

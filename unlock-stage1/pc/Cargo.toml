@@ -1,0 +1,38 @@
+[package]
+name = "unlock-pc"
+version = "0.1.0"
+edition = "2021"
+description = "Stage 1: phone-to-PC authenticated handshake over BLE / RFCOMM / USB. Touches no sign-in setting."
+
+[dependencies]
+hmac = "0.12.1"
+sha2 = "0.10.9"
+subtle = "2.6.1"
+getrandom = "0.3.4"
+hex = "0.4.3"
+p256 = { version = "0.13.2", default-features = false, features = ["ecdsa", "pkcs8", "std", "alloc"] }
+
+[target.'cfg(windows)'.dependencies]
+windows = { version = "0.62.2", features = [
+  "Foundation",
+  "Foundation_Collections",
+  "Devices_Bluetooth",
+  "Devices_Bluetooth_Advertisement",
+  "Devices_Bluetooth_GenericAttributeProfile",
+  "Devices_Bluetooth_Rfcomm",
+  "Devices_Enumeration",
+  "Devices_Radios",
+  "Networking",
+  "Networking_Sockets",
+  "Storage_Streams",
+  "Win32_Foundation",
+  "Win32_Security_Cryptography",
+  "Win32_NetworkManagement_IpHelper",
+  "Win32_NetworkManagement_Ndis",
+  "Win32_Networking_WinSock",
+] }
+windows-future = "0.3.2"
+windows-collections = "0.3.2"
+
+[profile.release]
+opt-level = 2

@@ -1,0 +1,8 @@
+keys/
+pc/identity.json
+pc/layout/
+pc/unpacked/
+pc/out/
+pc/*.pfx
+*.msix
+*.aab

@@ -1,0 +1,366 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- BLE peripheral (GATT server + advertising) and classic RFCOMM listener -->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30"/>
+    <!-- Sockets only, for the USB-tethering link and the adb-forward evaluation. The app binds to
+         the tether interface and loopback only; it never opens a connection to the Internet. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Aura Anywhere (item 17): notice when the Tailscale VPN comes up (event, no polling) -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!-- lets Android show the Wi-Fi name (SSID) so Wake PC can match the network it knows -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!-- foreground service that keeps the GATT server / listeners alive with the screen off -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!-- Shizuku lists (and lets the owner grant) only apps that declare its API permission -->
+    <uses-permission android:name="moe.shizuku.manager.permission.API_V23"/>
+    <!-- CompanionDeviceManager link with the PC (all "normal" permissions, granted at install).
+         RUN_IN_BACKGROUND: power-save allowlist while associated; START_FOREGROUND_SERVICES_FROM_BACKGROUND:
+         FGS-start exemption; OBSERVE_..._PRESENCE: the system binds PcPresenceService when the PC appears. -->
+    <uses-permission android:name="android.permission.REQUEST_COMPANION_RUN_IN_BACKGROUND"/>
+    <uses-permission android:name="android.permission.REQUEST_COMPANION_START_FOREGROUND_SERVICES_FROM_BACKGROUND"/>
+    <uses-permission android:name="android.permission.REQUEST_OBSERVE_COMPANION_DEVICE_PRESENCE"/>
+    <uses-feature android:name="android.software.companion_device_setup" android:required="false"/>
+    <!-- FINGERPRINT approval over the lock screen -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    <!-- Zero-tap continue (item 19): WhatsApp chat name -> number (asked on the setup screen), and the
+         Usage access fallback for "which app came to the front" (the user grants it in Settings). -->
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" xmlns:tools="http://schemas.android.com/tools" tools:ignore="ProtectedPermissions"/>
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
+    <!-- chat-head tree: the Aura head floats over other apps (the owner grants "Display over other apps") -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <!-- item 25: lets the setup walk show the one-tap "Let Aura run in the background" dialog -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+    <!-- Handoff: open the YouTube app / default browser for links from the PC (package visibility) -->
+    <queries>
+        <intent><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent>
+        <intent><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.HOME"/></intent>
+        <package android:name="app.morphe.android.youtube"/>
+        <package android:name="com.google.android.youtube"/>
+        <!-- zero-tap continue (item 19): the owner's apps -->
+        <package android:name="app.morphe.android.apps.youtube.music"/>
+        <package android:name="app.rvx.android.apps.youtube.music"/>
+        <package android:name="com.google.android.apps.youtube.music"/>
+        <package android:name="com.sec.android.app.sbrowser"/>
+        <package android:name="com.facebook.katana"/>
+        <package android:name="com.facebook.lite"/>
+        <package android:name="com.facebook.orca"/>
+        <package android:name="com.whatsapp"/>
+        <package android:name="com.anthropic.claude"/>
+        <package android:name="com.spotify.music"/>
+        <!-- Aura Anywhere: is Tailscale installed? (onboarding) -->
+        <package android:name="com.tailscale.ipn"/>
+        <package android:name="com.android.vending"/>
+        <!-- Open laptop: is Moonlight (or the Artemis fork) installed? -->
+        <package android:name="com.limelight"/>
+        <package android:name="com.limelight.noir"/>
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <category android:name="android.intent.category.BROWSABLE"/>
+            <data android:scheme="https"/>
+        </intent>
+    </queries>
+    <application
+        android:label="Aura"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            <meta-data
+              android:name="io.flutter.embedding.android.NormalTheme"
+              android:resource="@style/NormalTheme"
+              />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ApproveActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <service
+            android:name=".UnlockService"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice"/>
+        <service
+            android:name=".PcPresenceService"
+            android:exported="true"
+            android:permission="android.permission.BIND_COMPANION_DEVICE_SERVICE">
+            <intent-filter>
+                <action android:name="android.companion.CompanionDeviceService"/>
+            </intent-filter>
+        </service>
+        <!-- Wear Data Layer receiver: pair / lock requests from the watch app (same package + signing cert) -->
+        <service
+            android:name=".watchlink.WatchLinkService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
+                <data android:scheme="wear" android:host="*" android:pathPrefix="/cu/watch" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.CAPABILITY_CHANGED" />
+                <data android:scheme="wear" android:host="*" android:path="/continuity_unlock_watch" />
+            </intent-filter>
+        </service>
+        <receiver android:name=".BootReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+            </intent-filter>
+        </receiver>
+        <!-- Aura Handoff (item 12) -->
+        <activity
+            android:name=".handoff.ShareToPcActivity"
+            android:label="Continue on PC"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="*/*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="*/*"/>
+            </intent-filter>
+        </activity>
+        <activity-alias
+            android:name=".handoff.CopyToPc"
+            android:targetActivity=".handoff.ShareToPcActivity"
+            android:label="Copy to PC clipboard"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+        </activity-alias>
+        <activity
+            android:name=".extras.RingActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen"/>
+        <receiver android:name=".handoff.ChatHeadReceiver" android:exported="false">
+            <intent-filter><action android:name="com.spacez.unlock_stage1.CHAT_HEAD_SHOW"/></intent-filter>
+        </receiver>
+        <receiver android:name=".extras.LaptopMediaReceiver" android:exported="false">
+            <intent-filter><action android:name="com.spacez.unlock_stage1.LAPTOP_MEDIA"/></intent-filter>
+        </receiver>
+        <receiver android:name=".buds.BudsActionReceiver" android:exported="false">
+            <intent-filter><action android:name="com.spacez.unlock_stage1.BUDS_WANT"/></intent-filter>
+        </receiver>
+        <receiver android:name=".extras.RingStopReceiver" android:exported="false">
+            <intent-filter><action android:name="com.spacez.unlock_stage1.RING_STOP"/></intent-filter>
+        </receiver>
+        <!-- laptop-app shortcuts (picker / home screen / long-press): stays visible while the PC opens the app -->
+        <activity
+            android:name=".handoff.LaptopAppActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity
+            android:name=".handoff.ContinueActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity
+            android:name=".handoff.ContinueHereActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity
+            android:name=".handoff.LinkOpenActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity
+            android:name=".handoff.PcListActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog.NoActionBar"/>
+        <activity
+            android:name=".handoff.ContinueBubbleActivity"
+            android:exported="false"
+            android:allowEmbedded="true"
+            android:resizeableActivity="true"
+            android:documentLaunchMode="always"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""/>
+        <activity
+            android:name=".handoff.MediaAccessActivity"
+            android:label="Media access"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Material.NoActionBar"/>
+        <service
+            android:name=".handoff.ContinueTileService"
+            android:label="Continue on PC"
+            android:icon="@drawable/ic_aura_continue"
+            android:exported="true"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+            </intent-filter>
+            <meta-data android:name="android.service.quicksettings.TOGGLEABLE_TILE" android:value="false"/>
+        </service>
+        <!-- only to read the YouTube app's playback position; it never reads notifications -->
+        <service
+            android:name=".handoff.MediaListener"
+            android:label="Aura media position"
+            android:exported="true"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService"/>
+            </intent-filter>
+        </service>
+        <provider
+            android:name=".handoff.ClipProvider"
+            android:authorities="${applicationId}.aura.clip"
+            android:exported="false"
+            android:grantUriPermissions="true"/>
+        <!-- Aura Anywhere (item 17) -->
+        <activity
+            android:name=".away.RemoteUnlockActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity
+            android:name=".away.AwayActionActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <receiver
+            android:name=".away.AwayWidget"
+            android:label="Aura"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/aura_away_widget_info"/>
+        </receiver>
+        <service
+            android:name=".away.ContinueFromLaptopTile"
+            android:label="From laptop"
+            android:icon="@drawable/ic_aura_laptop"
+            android:exported="true"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+            </intent-filter>
+            <meta-data android:name="android.service.quicksettings.TOGGLEABLE_TILE" android:value="false"/>
+        </service>
+        <!-- Aura (item 13): Lock PC / Unlock PC quick-settings tiles -->
+        <service
+            android:name=".away.LockPcTile"
+            android:label="Lock PC"
+            android:icon="@drawable/ic_aura_lock"
+            android:exported="true"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+            </intent-filter>
+            <meta-data android:name="android.service.quicksettings.TOGGLEABLE_TILE" android:value="false"/>
+        </service>
+        <service
+            android:name=".away.WakePcTile"
+            android:label="Wake PC"
+            android:icon="@drawable/ic_aura_laptop"
+            android:exported="true"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+            </intent-filter>
+            <meta-data android:name="android.service.quicksettings.TOGGLEABLE_TILE" android:value="false"/>
+        </service>
+        <service
+            android:name=".away.UnlockPcTile"
+            android:label="Unlock PC"
+            android:icon="@drawable/ic_aura_unlock"
+            android:exported="true"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+            </intent-filter>
+            <meta-data android:name="android.service.quicksettings.TOGGLEABLE_TILE" android:value="false"/>
+        </service>
+        <!-- adb test hooks; only the shell / system hold DUMP -->
+        <receiver android:name=".TestReceiver" android:exported="true" android:permission="android.permission.DUMP"/>
+        <!-- Zero-tap continue (item 19) -->
+        <service
+            android:name=".zerotap.AuraAccessibility"
+            android:label="@string/aura_a11y_label"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService"/>
+            </intent-filter>
+            <meta-data android:name="android.accessibilityservice" android:resource="@xml/aura_accessibility"/>
+        </service>
+        <!-- Watch controls the phone (item 7): gestures + typing only, hears no events -->
+        <service
+            android:name=".watchlink.AuraRemoteAccessibility"
+            android:label="@string/aura_remote_a11y_label"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService"/>
+            </intent-filter>
+            <meta-data android:name="android.accessibilityservice" android:resource="@xml/aura_remote_accessibility"/>
+        </service>
+        <activity android:name=".zerotap.ZeroTapSetupActivity" android:exported="false" android:label="Zero-tap continue"
+            android:theme="@android:style/Theme.Material.NoActionBar"/>
+        <receiver android:name=".zerotap.ZeroTap$ChipReceiver" android:exported="false"/>
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+        <!-- Galaxy Buds hand-off: Shizuku hands this app its binder here (the API_V23 permission is declared at the top) -->
+        <provider
+            android:name="rikka.shizuku.ShizukuProvider"
+            android:authorities="${applicationId}.shizuku"
+            android:multiprocess="false"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.INTERACT_ACROSS_USERS_FULL"/>
+    </application>
+</manifest>

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AutoLock settings</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <header class="app-header">
+    <img class="app-mark" src="app-mark.svg" alt="" width="32" height="32">
+    <div class="app-title">
+      <h1>AutoLock</h1>
+      <p>Locks this PC when you walk away</p>
+    </div>
+    <span id="mode" class="chip" data-tone="primary" title="Switch modes from the tray icon menu">Dry run</span>
+  </header>
+
+  <main class="app-content">
+    <section id="hero" class="hero reveal" data-tone="neutral" aria-live="polite" aria-atomic="true">
+      <div class="hero-well"><svg class="ic" aria-hidden="true"><use id="heroIcon" href="#i-shield"/></svg></div>
+      <div class="hero-title" id="heroTitle">Starting&hellip;</div>
+      <div class="hero-sub" id="heroSub">Checking Bluetooth</div>
+      <div class="hero-meter" id="meter" hidden><i></i></div>
+    </section>
+
+    <section class="section reveal" style="--i:1" aria-labelledby="devH">
+      <div class="section-head">
+        <h2 id="devH">Devices to watch</h2>
+        <span class="meta">Bluetooth only, works with Wi-Fi off</span>
+      </div>
+      <div class="group" id="devices">
+        <div class="row"><span class="row-text"><span class="row-label">Looking for paired devices&hellip;</span></span></div>
+      </div>
+    </section>
+
+    <section class="section reveal" style="--i:2" aria-labelledby="ruleH">
+      <div class="section-head"><h2 id="ruleH">Lock rule</h2></div>
+      <div class="group">
+        <div class="row">
+          <span class="row-text">
+            <label class="row-label" for="absent">Lock after I've been away for</label>
+            <span class="row-desc">5 to 600 seconds</span>
+          </span>
+          <span class="field"><input id="absent" type="number" min="5" max="600" step="1" inputmode="numeric"><span class="unit">sec</span></span>
+        </div>
+        <div class="row">
+          <span class="row-text">
+            <span class="row-label" id="whenL">Lock when</span>
+            <span class="row-desc" id="whenD">With more than one device</span>
+          </span>
+          <div class="seg" role="radiogroup" aria-labelledby="whenL" aria-describedby="whenD">
+            <label><input type="radio" name="when" value="all_absent"><span>All are away</span></label>
+            <label><input type="radio" name="when" value="any_absent"><span>Any is away</span></label>
+          </div>
+        </div>
+        <label class="row clickable" for="userssi">
+          <span class="row-text">
+            <span class="row-label">Use signal strength</span>
+            <span class="row-desc">Count a weak signal as away, not just a lost one</span>
+          </span>
+          <input id="userssi" type="checkbox" class="switch" role="switch">
+        </label>
+        <div class="row sub stack" id="rssirow">
+          <span class="row-text">
+            <label class="row-label" for="rssi">Away when weaker than</label>
+            <span class="row-desc">Lower is farther away. Around &minus;90 suits a phone in a pocket.</span>
+          </span>
+          <input id="rssi" class="range" type="range" min="-100" max="-50" step="1" aria-describedby="rssival">
+          <span class="value-badge" id="rssival">&minus;90 dBm</span>
+        </div>
+        <label class="row clickable" for="fullscreen">
+          <span class="row-text">
+            <span class="row-label">Never lock during fullscreen video or slides</span>
+            <span class="row-desc">Holds the lock while a game, film or presentation fills the screen</span>
+          </span>
+          <input id="fullscreen" type="checkbox" class="switch" role="switch">
+        </label>
+        <div class="row">
+          <span class="row-text">
+            <label class="row-label" for="ping">Check a disconnected device every</label>
+            <span class="row-desc">5 to 120 seconds. Shorter notices you leaving sooner.</span>
+          </span>
+          <span class="field"><input id="ping" type="number" min="5" max="120" step="1" inputmode="numeric"><span class="unit">sec</span></span>
+        </div>
+      </div>
+      <p class="section-note">Always on: never locks within 60 seconds of you signing in, never more than once every 2 minutes, and waits to see your devices again after each lock.</p>
+    </section>
+
+    <section class="section reveal" style="--i:3" aria-labelledby="genH">
+      <div class="section-head"><h2 id="genH">General</h2></div>
+      <div class="group">
+        <label class="row clickable" for="autostart">
+          <svg class="ic row-icon" aria-hidden="true"><use href="#i-power"/></svg>
+          <span class="row-text">
+            <span class="row-label">Start with Windows</span>
+            <span class="row-desc">Applies right away</span>
+          </span>
+          <input id="autostart" type="checkbox" class="switch" role="switch">
+        </label>
+        <div class="row">
+          <svg class="ic row-icon" aria-hidden="true"><use href="#i-folder"/></svg>
+          <span class="row-text">
+            <span class="row-label">Activity log</span>
+            <span class="row-desc path" id="logpath"></span>
+          </span>
+          <button id="logs" class="btn">Open folder</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <span id="saved" class="status-note" role="status" aria-live="polite"></span>
+    <span class="spacer"></span>
+    <button id="revert" class="btn" hidden>Undo changes</button>
+    <button id="save" class="btn btn-primary" disabled title="Save (Ctrl+S)">Save</button>
+  </footer>
+</div>
+<script src="ui-icons.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

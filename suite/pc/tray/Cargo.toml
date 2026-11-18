@@ -1,0 +1,52 @@
+[package]
+name = "continuity-tray"
+version = "0.1.0"
+description = "Continuity - one tray app that glues KDE Connect, Snipping Tool, Syncthing, scrcpy and Phone Link together"
+authors = ["the owner"]
+edition = "2021"
+
+[[bin]]
+name = "continuity"
+path = "src/main.rs"
+
+[features]
+# Lets a plain `cargo build` embed the UI without the Tauri CLI (same as Handoff).
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+
+[build-dependencies]
+tauri-build = { version = "2.7.3", features = [] }
+
+[dependencies]
+continuity-core = { path = "../core" }
+tauri = { version = "2.12.4", features = ["tray-icon", "image-png"] }
+tauri-plugin-global-shortcut = "2.4.1"
+tauri-plugin-single-instance = "2.5.4"
+# toasts with buttons (Copy / Open / Save) and an in-process activation callback
+tauri-winrt-notification = "0.7.2"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+arboard = "3.7.0"
+image = { version = "0.25.10", default-features = false, features = ["png", "jpeg"] }
+
+[target.'cfg(windows)'.dependencies]
+windows = { version = "0.62.2", features = [
+  "Foundation",
+  "Foundation_Collections",
+  "Devices_Radios",
+  "Win32_Foundation",
+  "Win32_NetworkManagement_IpHelper",
+  "Win32_NetworkManagement_Ndis",
+  "Win32_Networking_WinSock",
+  "Win32_System_Com",
+  "Win32_System_DataExchange",
+  "Win32_System_Diagnostics_ToolHelp",
+  "Win32_System_Threading",
+  "Win32_UI_Shell",
+  "Win32_UI_WindowsAndMessaging",
+] }
+windows-future = "0.3.2"
+windows-collections = "0.3.2"
+
+[dev-dependencies]
+tempfile = "3.27.0"

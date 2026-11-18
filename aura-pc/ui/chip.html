@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Aura</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  /* Zero-tap continue chip (item 19): what just continued here, Undo / Pick another, gone after 2 s
+     (stays while the pointer is on it). Navy pill, the Aura look. */
+  html, body { margin: 0; background: transparent; overflow: hidden; font: var(--type-body); user-select: none; }
+  .chip { position: absolute; inset: 6px; display: flex; align-items: center; gap: 10px; padding: 0 10px 0 14px;
+    border-radius: 999px; background: #0d1b33; color: #eaf1ff; box-shadow: 0 6px 20px rgba(0,0,0,.35);
+    border: 1px solid rgba(120,170,255,.25); animation: in 220ms cubic-bezier(.2,.9,.3,1.2); }
+  .chip.out { animation: out 180ms ease-in forwards; }
+  @keyframes in { from { transform: translateY(14px) scale(.96); opacity: 0 } }
+  @keyframes out { to { transform: translateY(10px); opacity: 0 } }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #4f9bff; flex: none; box-shadow: 0 0 10px #4f9bff; }
+  .txt { flex: 1; min-width: 0; }
+  .t1 { font: var(--type-caption); color: #9fb6dd; }
+  .t2 { font: var(--type-body-strong); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  button { font: var(--type-body-strong); color: #eaf1ff; background: rgba(79,155,255,.18); border: 0; border-radius: 999px;
+    height: 30px; padding: 0 12px; cursor: pointer; }
+  button:hover { background: rgba(79,155,255,.32); }
+  .menu { position: absolute; left: 6px; right: 6px; bottom: 74px; background: #0d1b33; border-radius: 12px; padding: 4px;
+    border: 1px solid rgba(120,170,255,.25); display: none; }
+  .menu.open { display: block; }
+  .menu div { padding: 8px 10px; border-radius: 8px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #eaf1ff; }
+  .menu div:hover { background: rgba(79,155,255,.22); }
+</style>
+</head>
+<body>
+<div class="chip" id="chip">
+  <span class="dot"></span>
+  <div class="txt"><div class="t1">Continued from your phone</div><div class="t2" id="title"></div></div>
+  <button id="undo">Undo</button>
+  <button id="pick">Pick another</button>
+</div>
+<script>
+  const { invoke } = window.__TAURI__.core;
+  let d = {};
+  try { d = JSON.parse(decodeURIComponent(location.hash.slice(1))); } catch (_) {}
+  document.getElementById("title").textContent = d.title || "From your phone";
+  const others = Array.isArray(d.others) ? d.others : [];
+  const pick = document.getElementById("pick");
+  if (!others.length) pick.style.display = "none";
+  let hover = false, timer = null;
+  const close = () => { document.getElementById("chip").classList.add("out"); setTimeout(() => invoke("zt_close").catch(() => {}), 190); };
+  const arm = () => { clearTimeout(timer); timer = setTimeout(() => { if (!hover) close(); }, d.ms || 2000); };
+  document.body.addEventListener("mouseenter", () => { hover = true; clearTimeout(timer); });
+  document.body.addEventListener("mouseleave", () => { hover = false; arm(); });
+  document.getElementById("undo").onclick = () => invoke("zt_undo").catch(() => {});
+  // Pick another: the chip turns into "Instead: <title>  [Open] [Next]" over the phone's last items
+  let ix = -1;
+  pick.onclick = () => {
+    hover = true; clearTimeout(timer);
+    ix = (ix + 1) % others.length;
+    document.querySelector(".t1").textContent = `Instead (${ix + 1}/${others.length})`;
+    document.getElementById("title").textContent = others[ix].title || others[ix].app;
+    pick.textContent = others.length > 1 ? "Next" : "Pick another";
+    const u = document.getElementById("undo");
+    u.textContent = "Open";
+    u.onclick = () => invoke("zt_pick", { index: ix + 1 }).catch(() => {});
+  };
+  arm();
+</script>
+</body>
+</html>

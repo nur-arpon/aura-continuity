@@ -1,0 +1,158 @@
+/* GENERATED COPY of design\tokens.css - edit the source and run design\sync.ps1 */
+/* =========================================================================
+   Continuity design tokens - one source for every Continuity app.
+   Source of truth: D:\Claude-Projects\Continuity\design\tokens.css
+   Copied into each app's ui\ folder by design\sync.ps1 (Tauri serves only
+   its own frontendDist, so the apps cannot import from ..\design at runtime).
+   Edit HERE, then run sync.ps1. Never edit the copies.
+
+   Palette: deep navy base, mid-blue surfaces and borders, bright blue for the
+   primary action, sea-glass teal for success, amber for warnings.
+   Every text pair below is measured (design\README.md has the table); all
+   pass WCAG 2.2 AA in both themes.
+   ========================================================================= */
+
+:root {
+  color-scheme: dark light;
+
+  /* ---- type: Fluent ramp, Segoe UI Variable (ships with Windows 11) ---- */
+  --font-text: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  --font-small: "Segoe UI Variable Small", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "Cascadia Mono", "Cascadia Code", Consolas, ui-monospace, monospace;
+  --type-caption: 400 12px/16px var(--font-text);
+  --type-body: 400 14px/20px var(--font-text);
+  --type-body-strong: 600 14px/20px var(--font-text);
+  --type-body-large: 400 18px/24px var(--font-text);
+  --type-subtitle: 600 20px/28px var(--font-display);
+  --type-title: 600 28px/36px var(--font-display);
+
+  /* ---- spacing: 4 px base, nothing between steps ---- */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px; --sp-5: 20px;
+  --sp-6: 24px; --sp-8: 32px; --sp-10: 40px; --sp-12: 48px;
+
+  /* ---- radius: scales with surface; nested = outer - padding ---- */
+  --r-control: 4px;   /* buttons, inputs, chips, checkbox */
+  --r-card: 8px;      /* cards, list groups, menus */
+  --r-hero: 12px;     /* the one status card at the top of a window */
+  --r-pill: 999px;
+
+  /* ---- sizes: Fluent density ---- */
+  --h-control: 32px;  /* button, input, select */
+  --h-row: 48px;      /* settings row (comfortable) */
+  --h-row-compact: 40px;
+
+  /* ---- motion ---- */
+  --dur-instant: 100ms;  /* hover, focus, press */
+  --dur-fast: 167ms;     /* toggle, checkbox, small state flip (Fluent "fast") */
+  --dur-normal: 250ms;   /* card/inline detail, status change */
+  --dur-slow: 333ms;     /* window content entrance */
+  --dur-spring: 480ms;   /* spring curves below are sampled over this */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);        /* entering */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);             /* leaving */
+  --ease-move: cubic-bezier(0.4, 0, 0.2, 1);         /* on-screen A to B */
+  --ease-fluent: cubic-bezier(0.1, 0.9, 0.2, 1);     /* Fluent decelerate */
+  /* Spring k=300 c=30 m=1 ("snappy", <1% overshoot) sampled as CSS linear(). */
+  --spring-snappy: linear(0, 0.066, 0.199, 0.359, 0.505, 0.633, 0.741, 0.821, 0.884, 0.926, 0.956,
+    0.976, 0.989, 0.996, 1.001, 1.003, 1.004, 1.004, 1.003, 1.003, 1.002, 1.002, 1.001, 1.001, 1);
+  /* Spring k=200 c=26 m=1 ("smooth", no overshoot). */
+  --spring-smooth: linear(0, 0.046, 0.141, 0.259, 0.379, 0.492, 0.593, 0.68, 0.752, 0.811, 0.857,
+    0.894, 0.923, 0.944, 0.961, 0.973, 0.981, 0.988, 0.992, 0.995, 0.997, 0.999, 0.999, 1, 1);
+  --stagger: 30ms;
+  --rise: 8px;           /* entrance travel for small elements */
+
+  /* ================= DARK (default: the family is navy-first) ============ */
+  --navy-950: #070F1C;
+  --navy-900: #0A1424;   /* window base */
+  --navy-850: #101E36;   /* card */
+  --navy-800: #172A49;   /* raised / hover */
+  --navy-750: #1E3459;   /* pressed / selected row */
+  --navy-700: #223A61;   /* hairline divider */
+  --blue-500: #5A77A6;   /* control border (3:1 on card) */
+  --blue-400: #5AA2FF;   /* primary */
+
+  --bg: var(--navy-900);
+  --bg-header: linear-gradient(180deg, #0F2142 0%, var(--navy-900) 100%);
+  --surface-1: var(--navy-850);
+  --surface-2: var(--navy-800);
+  --surface-3: var(--navy-750);
+  --input-bg: #0C1830;
+  --divider: var(--navy-700);
+  --border: var(--blue-500);
+  --border-strong: #7D98C4;
+
+  --text: #E9F0FB;       /* 14.5:1 on card */
+  --text-2: #B4C3DB;     /*  9.3:1 on card */
+  --text-3: #8FA3C4;     /*  6.5:1 on card, 5.6:1 on raised */
+
+  --primary: #5AA2FF;            /* 6.4:1 on card */
+  --primary-hover: #74B1FF;
+  --primary-press: #4790EE;
+  --on-primary: #06142B;         /* 7.0:1 on primary */
+  --primary-tint: rgb(90 162 255 / 0.14);
+  --primary-tint-strong: rgb(90 162 255 / 0.22);
+
+  --success: #4CD3B4;            /* 9.0:1 on card */
+  --success-tint: rgb(76 211 180 / 0.14);
+  --warning: #F3B95F;            /* 9.5:1 on card */
+  --warning-tint: rgb(243 185 95 / 0.14);
+  --neutral-dot: #7D8FAE;
+
+  --focus: #8CC2FF;              /* 9.9:1 on base */
+  --shadow-card: none;           /* cards separate by tint, not shadow */
+  --shadow-flyout: 0 8px 16px rgb(0 0 0 / 0.32), 0 0 1px rgb(0 0 0 / 0.4);
+  --highlight-edge: inset 0 1px 0 rgb(255 255 255 / 0.04);
+}
+
+/* ================= LIGHT ================================================= */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #EEF3FA;
+    --bg-header: linear-gradient(180deg, #E1EAF7 0%, #EEF3FA 100%);
+    --surface-1: #FAFCFF;
+    --surface-2: #E6EDF7;
+    --surface-3: #DCE5F2;
+    --input-bg: #FFFFFF;
+    --divider: #D3DEED;
+    --border: #7186A8;           /* 3.6:1 on card */
+    --border-strong: #4E6489;
+
+    --text: #0B1A33;             /* 16.9:1 on card */
+    --text-2: #33466A;           /*  9.2:1 */
+    --text-3: #53658A;           /*  5.7:1 on card, 5.0:1 on raised */
+
+    --primary: #1D5FD0;          /* 5.7:1 on card */
+    --primary-hover: #2A6CDD;
+    --primary-press: #174FB0;
+    --on-primary: #FAFCFF;       /* 5.7:1 */
+    --primary-tint: rgb(29 95 208 / 0.10);
+    --primary-tint-strong: rgb(29 95 208 / 0.16);
+
+    --success: #0A7360;          /* 5.6:1 on card */
+    --success-tint: rgb(10 115 96 / 0.10);
+    --warning: #8F5200;          /* 5.9:1 on card */
+    --warning-tint: rgb(143 82 0 / 0.10);
+    --neutral-dot: #7186A8;
+
+    --focus: #1D5FD0;
+    --shadow-flyout: 0 8px 16px rgb(11 26 51 / 0.14), 0 0 1px rgb(11 26 51 / 0.2);
+    --highlight-edge: none;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #EEF3FA; --bg-header: linear-gradient(180deg, #E1EAF7 0%, #EEF3FA 100%);
+  --surface-1: #FAFCFF; --surface-2: #E6EDF7; --surface-3: #DCE5F2; --input-bg: #FFFFFF;
+  --divider: #D3DEED; --border: #7186A8; --border-strong: #4E6489;
+  --text: #0B1A33; --text-2: #33466A; --text-3: #53658A;
+  --primary: #1D5FD0; --primary-hover: #2A6CDD; --primary-press: #174FB0; --on-primary: #FAFCFF;
+  --primary-tint: rgb(29 95 208 / 0.10); --primary-tint-strong: rgb(29 95 208 / 0.16);
+  --success: #0A7360; --success-tint: rgb(10 115 96 / 0.10);
+  --warning: #8F5200; --warning-tint: rgb(143 82 0 / 0.10); --neutral-dot: #7186A8;
+  --focus: #1D5FD0; --shadow-flyout: 0 8px 16px rgb(11 26 51 / 0.14), 0 0 1px rgb(11 26 51 / 0.2);
+  --highlight-edge: none;
+}
+
+/* Windows high contrast / forced colours: hand everything to the system. */
+@media (forced-colors: active) {
+  :root { --border: CanvasText; --divider: CanvasText; --focus: Highlight; }
+}

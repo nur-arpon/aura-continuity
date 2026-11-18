@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Handoff settings</title>
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="components.css" />
+  <link rel="stylesheet" href="app.css" />
+</head>
+<body>
+<div class="app">
+  <header class="app-header">
+    <img class="app-mark" src="app-mark.svg" alt="" width="32" height="32" />
+    <div class="app-title">
+      <h1>Handoff</h1>
+      <p>Send what you're looking at to your phone</p>
+    </div>
+  </header>
+
+  <main class="app-content">
+    <section id="hero" class="hero reveal" data-tone="neutral" aria-live="polite" aria-atomic="true">
+      <div class="hero-well"><svg class="ic" aria-hidden="true"><use id="heroIcon" href="#i-phone"/></svg></div>
+      <div class="hero-title" id="peer">Looking for your phone&hellip;</div>
+      <div class="hero-sub" id="backend">Asking the Aura service</div>
+    </section>
+
+    <section class="section reveal" style="--i:1" aria-labelledby="sendH">
+      <div class="section-head"><h2 id="sendH">Sending</h2></div>
+      <div class="group">
+        <div class="row">
+          <svg class="ic row-icon" aria-hidden="true"><use href="#i-keyboard"/></svg>
+          <span class="row-text">
+            <span class="row-label" id="hotkeyL">Send shortcut</span>
+            <span class="row-desc" id="hotkeyD">Sends the open tab, selected files, selected text or clipboard</span>
+          </span>
+          <button id="hotkey" class="hotkey" type="button" aria-labelledby="hotkeyL" aria-describedby="hotkeyD hotkeyError"></button>
+        </div>
+        <div class="row-error" id="hotkeyError" role="alert" hidden></div>
+        <div class="row">
+          <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+          <span class="row-text">
+            <label class="row-label" for="device">Send to</label>
+            <span class="row-desc" id="deviceD">Paired with Aura</span>
+          </span>
+          <select id="device" class="select"></select>
+        </div>
+        <label class="row clickable" for="youtubeTimestamp">
+          <svg class="ic row-icon" aria-hidden="true"><use href="#i-play"/></svg>
+          <span class="row-text">
+            <span class="row-label">Carry on YouTube where you left off</span>
+            <span class="row-desc">Adds the current time to the link when it can be read</span>
+          </span>
+          <input type="checkbox" id="youtubeTimestamp" class="switch" role="switch" />
+        </label>
+      </div>
+    </section>
+
+    <section class="section reveal" style="--i:2" aria-labelledby="recvH">
+      <div class="section-head"><h2 id="recvH">From your phone</h2></div>
+      <div class="group">
+        <label class="row clickable" for="openInBrave">
+          <svg class="ic row-icon" aria-hidden="true"><use href="#i-globe"/></svg>
+          <span class="row-text">
+            <span class="row-label">Open links in Brave</span>
+            <span class="row-desc">Otherwise they open in your default browser</span>
+          </span>
+          <input type="checkbox" id="openInBrave" class="switch" role="switch" />
+        </label>
+      </div>
+      <p class="section-note">Everything the phone shares is listed under From phone in the tray icon menu.</p>
+    </section>
+
+    <section class="section reveal" style="--i:3" aria-labelledby="contH">
+      <div class="section-head"><h2 id="contH">Continuity</h2></div>
+      <div class="group">
+        <label class="row clickable" for="suggest">
+          <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+          <span class="row-text">
+            <span class="row-label">Suggest Continue on phone / PC</span>
+            <span class="row-desc">A quiet offer when the other device shows something you can carry on</span>
+          </span>
+          <input type="checkbox" id="suggest" class="switch" role="switch" />
+        </label>
+        <label class="row clickable" for="clipboardSync">
+          <svg class="ic row-icon" aria-hidden="true"><use href="#i-keyboard"/></svg>
+          <span class="row-text">
+            <span class="row-label">Share the clipboard</span>
+            <span class="row-desc">Text and pictures you copy go to the other device. Off until you turn it on</span>
+          </span>
+          <input type="checkbox" id="clipboardSync" class="switch" role="switch" />
+        </label>
+        <div class="row drop" id="drop">
+          <svg class="ic row-icon" aria-hidden="true"><use href="#i-folder"/></svg>
+          <span class="row-text">
+            <span class="row-label">Drop files here to send them</span>
+            <span class="row-desc" id="dropD">They land in Downloads/Aura on the phone</span>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal" style="--i:4" aria-labelledby="genH">
+      <div class="section-head"><h2 id="genH">General</h2></div>
+      <div class="group">
+        <label class="row clickable" for="autostart">
+          <svg class="ic row-icon" aria-hidden="true"><use href="#i-power"/></svg>
+          <span class="row-text">
+            <span class="row-label">Start with Windows</span>
+            <span class="row-desc">Applies right away</span>
+          </span>
+          <input type="checkbox" id="autostart" class="switch" role="switch" />
+        </label>
+        <div class="row">
+          <svg class="ic row-icon" aria-hidden="true"><use href="#i-folder"/></svg>
+          <span class="row-text">
+            <span class="row-label">Log and queue</span>
+            <span class="row-desc">The log, settings and anything waiting to send</span>
+          </span>
+          <button id="openLogs" class="btn" type="button">Open folder</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <span class="status-note" id="saved" role="status" aria-live="polite"></span>
+    <span class="spacer"></span>
+    <span class="version" id="version"></span>
+  </footer>
+</div>
+<script src="ui-icons.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

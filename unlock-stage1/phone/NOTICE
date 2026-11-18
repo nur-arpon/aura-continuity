@@ -1,0 +1,12 @@
+Aura phone app (unlock-stage1/phone) - third-party notices
+
+Material Symbols / Material Icons (Google) - Apache License 2.0
+  https://github.com/google/material-design-icons
+  Path data used in res/drawable/ic_aura_lock.xml, ic_aura_unlock.xml, ic_aura_play.xml.
+
+flutter_animate (gskinner.com) - MIT License
+  https://pub.dev/packages/flutter_animate  (pulled by pub; licence shipped in the app's licence registry)
+
+Robolectric - MIT License (test-only dependency, not shipped)
+
+All UI sounds (res/raw/aura_*.wav) are synthesized by tools/sounds.py: original, no third-party audio.

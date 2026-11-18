@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Settings window",
+  "windows": ["settings", "ring", "zt-chip", "zt-bubble", "aura-head", "aura-indicator"],
+  "permissions": ["core:default", "core:window:allow-hide", "core:window:allow-show", "core:window:allow-set-focus", "core:window:allow-close", "core:window:allow-minimize", "core:window:allow-unminimize"]
+}

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108" width="108" height="108"><clipPath id="r"><rect x="3" y="3" width="102" height="102" rx="26"/></clipPath><g clip-path="url(#r)"><defs>
+    <radialGradient id="bg" cx="54" cy="50" r="72" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#16305A"/><stop offset="0.5" stop-color="#0C1A33"/><stop offset="1" stop-color="#070F1C"/>
+    </radialGradient>
+    <radialGradient id="field" cx="54" cy="54" r="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5AA2FF" stop-opacity="0.6"/><stop offset="0.5" stop-color="#5AA2FF" stop-opacity="0.2"/><stop offset="1" stop-color="#5AA2FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="dot" cx="52" cy="52" r="9" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/><stop offset="0.5" stop-color="#CFE3FF"/><stop offset="1" stop-color="#5AA2FF"/>
+    </radialGradient>
+  </defs>
+  <rect width="108" height="108" fill="url(#bg)"/>
+  <circle cx="54" cy="54" r="30" fill="url(#field)"/>
+  <circle cx="54" cy="54" r="26" fill="none" stroke="#8EC5FF" stroke-opacity="0.3" stroke-width="1"/>
+  <circle cx="54" cy="54" r="18" fill="none" stroke="#8EC5FF" stroke-opacity="0.8" stroke-width="1.8"/>
+  <circle cx="54" cy="54" r="7" fill="url(#dot)"/>
+</g></svg>

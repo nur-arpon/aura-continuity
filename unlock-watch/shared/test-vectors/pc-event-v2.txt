@@ -1,0 +1,20 @@
+# Shared test vector: phone -> PC lock event signed with the v2 AUTO (level 1) key.
+# Read by: unlock-watch shared tests (Kotlin), phone app tests (Kotlin), watch-hint (Rust), autolock events.rs (Rust).
+# secret is ASCII; key1 = HMAC(secret,"continuity-unlock/v2/key/1"); pc_id = HMAC(secret,"continuity-unlock/v2/id")[..8]
+# event = LOCK_NOW (1), phone_ms = 1700000000000, counter = 7
+# frame = "CU1E" | ver 1 | event | phone_ms(8 BE) | counter(8 BE) | pc_id(8) | HMAC-SHA256(key1, first 30 bytes)
+# wire  = u16 BE length | 0x02 (link ver) | 0x07 (T_EVENT) | frame      (what the phone writes on RFCOMM 7c1e0030)
+secret=0123456789abcdefghij
+key1=9fe56dca6c164014a2b6f80bdddef697143e36c72d4140c739bba11ee07fb31e
+pc_id=f1e6f2744a9922eb
+frame=4355314501010000018bcfe568000000000000000007f1e6f2744a9922eb4359706974b7ac5487fbc7e2263975b8954a8bb7391af3dd834b4f1688052181
+wire=004002074355314501010000018bcfe568000000000000000007f1e6f2744a9922eb4359706974b7ac5487fbc7e2263975b8954a8bb7391af3dd834b4f1688052181
+
+# Level-0 (no-auth "deny" key) variant, accepted by autolock for lock-only events since 2026-10-20: the phone's
+# Keystore releases the level-1 key only within 5 min of the user unlocking the phone, level 0 always.
+# key0 = HMAC(secret,"continuity-unlock/v2/key/0"); event = OFF_WRIST (2), phone_ms = 1700000000000, counter = 8
+# (counter 8 > 7: one counter space shared by both keys, so a level-1 frame #7 followed by this one is accepted
+#  and replaying either afterwards is refused)
+key0=f19dc4ad8cdd41d23e5b640c5679646bb40131c1a7a80a14c727eb02cc440d3e
+frame0=4355314501020000018bcfe568000000000000000008f1e6f2744a9922ebe387872c10a4231c4b5e673da1aa3c73d795f8fef13ab50fd57661ca80aeafcc
+wire0=004002074355314501020000018bcfe568000000000000000008f1e6f2744a9922ebe387872c10a4231c4b5e673da1aa3c73d795f8fef13ab50fd57661ca80aeafcc

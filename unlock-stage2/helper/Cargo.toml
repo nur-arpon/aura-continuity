@@ -1,0 +1,47 @@
+[package]
+name = "continuity-helper"
+version = "0.1.0"
+edition = "2021"
+description = "Stage 2 helper: answers 'may this session be unlocked by the phone/watch?' over a local named pipe. Stores, sends and checks no password."
+
+[lib]
+name = "continuity_helper"
+path = "src/lib.rs"
+
+[[bin]]
+name = "continuity-helper"
+path = "src/main.rs"
+
+[[bin]]
+name = "pipe-test"
+path = "src/bin/pipe-test.rs"
+
+[dependencies]
+unlock-pc = { path = "../../unlock-stage1/pc" }
+hmac = "0.12.1"
+sha2 = "0.10.9"
+subtle = "2.6.1"
+getrandom = "0.3.4"
+hex = "0.4.3"
+tokio = { version = "1.52", features = ["rt", "net", "time", "sync", "io-util", "macros"] }
+
+[target.'cfg(windows)'.dependencies]
+windows = { version = "0.62.2", features = [
+  "Win32_Foundation",
+  "Win32_Graphics_Gdi",
+  "Win32_Security",
+  "Win32_Security_Authorization",
+  "Win32_Storage_FileSystem",
+  "Win32_System_Threading",
+  "Win32_System_Pipes",
+  "Win32_System_Power",
+  "Win32_System_RemoteDesktop",
+  "Win32_System_SystemServices",
+  "Win32_System_LibraryLoader",
+  "Win32_System_Com",
+  "Win32_UI_Shell",
+  "Win32_UI_WindowsAndMessaging",
+] }
+
+[profile.release]
+opt-level = 2

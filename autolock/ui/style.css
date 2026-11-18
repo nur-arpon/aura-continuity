@@ -1,0 +1,36 @@
+/* AutoLock-only layout. Tokens and controls come from tokens.css and
+   components.css (shared Continuity design system, see design\README.md). */
+
+.path {
+  font: 400 12px/16px var(--font-mono); color: var(--text-3);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; direction: rtl; text-align: left;
+}
+
+/* Device list */
+.device { gap: var(--sp-3); }
+.device .dev-icon {
+  width: 32px; height: 32px; border-radius: var(--r-card); flex: none;
+  display: grid; place-items: center; background: var(--surface-2); color: var(--text-2);
+}
+.device .dev-icon .ic { width: 18px; height: 18px; }
+.device .row-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.device .row-desc { font-variant-numeric: tabular-nums; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.device:has(.check:checked) .dev-icon { background: var(--primary-tint); color: var(--primary); }
+.device:not(:has(.check:checked)) .row-label { color: var(--text-2); }
+
+/* Signal threshold follows its switch. */
+#rssirow { transition: opacity var(--dur-fast) linear; }
+#rssirow.is-disabled { opacity: 0.5; }
+#rssirow.is-disabled .range, #rssirow.is-disabled .row-label { pointer-events: none; }
+
+/* Mode chip: amber when it really locks, so live never looks like dry run. */
+#mode[data-tone="warning"]::before { animation: none; }
+
+/* Narrow window (min 380 px): stack the control under its label. */
+@media (max-width: 420px) {
+  .app-header, .app-content, .app-footer { padding-inline: var(--sp-4); }
+  .row:has(.seg), .row:has(.range) { flex-wrap: wrap; }
+  .row:has(.seg) .row-text, .row:has(.range) .row-text { flex-basis: 100%; }
+  .row .range { flex: 1; }
+  #revert { min-width: 0; }
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Continuity Handoff",
+  "version": "0.1.0",
+  "identifier": "com.spacez.continuity.handoff",
+  "build": {
+    "frontendDist": "../ui"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [],
+    "security": {
+      "csp": "default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "publisher": "SpaceZ",
+    "category": "Utility",
+    "shortDescription": "Send what you are looking at between your PC and your phone.",
+    "longDescription": "Send what you are looking at between your PC and your phone.",
+    "windows": { "nsis": { "installMode": "currentUser", "installerHooks": "nsis/hooks.nsh", "displayLanguageSelector": false }, "webviewInstallMode": { "type": "downloadBootstrapper" } },
+    "targets": ["nsis"],
+    "icon": ["icons/32x32.png", "icons/128x128.png", "icons/icon.ico"]
+  }
+}

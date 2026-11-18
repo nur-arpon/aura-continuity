@@ -1,0 +1,79 @@
+[package]
+name = "handoff"
+version = "0.1.0"
+description = "Handoff - send what you are looking at between your PC and your phone"
+authors = ["the owner"]
+edition = "2021"
+
+[lib]
+name = "handoff_lib"
+crate-type = ["rlib"]
+
+[features]
+# Lets a plain `cargo build` embed the UI without the Tauri CLI.
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+
+[build-dependencies]
+tauri-build = { version = "2.7.3", features = [] }
+
+[dependencies]
+tauri = { version = "2.12.4", features = ["tray-icon", "image-png"] }
+tauri-plugin-dialog = "2.8.3"
+tauri-plugin-global-shortcut = "2.4.1"
+tauri-plugin-log = "2.10.1"
+tauri-plugin-notification = "2.7.0"
+tauri-plugin-single-instance = "2.5.4"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+log = "0.4.34"
+anyhow = "1.0.104"
+thiserror = "2.0.21"
+url = "2.5.8"
+arboard = "3.7.0"
+base64 = "0.22"
+image = { version = "0.25", default-features = false, features = ["png"] }
+# Suite logic reused by path (FolderWatch); serde-only, parked tray not involved.
+continuity-core = { path = "../../suite/pc/core" }
+# zbus 5 (blocking API) talks to KDE Connect's own dbus-daemon over localhost TCP.
+zbus = { version = "5", default-features = false, features = ["blocking-api", "async-io"] }
+rusqlite = { version = "0.40.2", features = ["bundled"] }
+
+[target.'cfg(windows)'.dependencies]
+winreg = "0.56.0"
+windows = { version = "0.62", features = [
+    "Win32_Foundation",
+    "Win32_UI_Accessibility",
+    "Win32_System_Com",
+    "Win32_UI_Shell",
+    "Win32_UI_Shell_Common",
+    "Win32_UI_Controls",
+    "Win32_Graphics_Gdi",
+    "Win32_Graphics_Dwm",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_NetworkManagement_IpHelper",
+    "Win32_Networking_WinSock",
+    "Win32_System_Threading",
+    "Win32_System_Variant",
+    "Win32_System_Ole",
+    "Win32_System_Diagnostics_ToolHelp",
+    "Win32_System_DataExchange",
+    "Win32_System_LibraryLoader",
+    "Win32_System_Pipes",
+    "Win32_Security",
+    "Win32_Security_Authorization",
+    "Win32_Storage_FileSystem",
+    "Win32_Storage_Packaging_Appx",
+    "Media_Control",
+    "Foundation",
+    "Foundation_Collections",
+] }
+
+[dev-dependencies]
+tempfile = "3.27.0"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true

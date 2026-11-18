@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="aura_a11y_label">Aura zero-tap continue</string>
+    <string name="aura_a11y_summary">Carries on what your PC was showing when you open YouTube, your browser, Facebook, Messenger, WhatsApp or Claude, and tells your PC what those apps show so it can carry on there.</string>
+    <string name="aura_a11y_description">Aura listens ONLY to YouTube, YouTube Music, Samsung Internet, Brave, Chrome, Facebook, Messenger, WhatsApp, Claude and Spotify. It notices when one of them comes to the front and reads its window title and labels (chat name, page address, conversation title). It never reads what you type, never stores or logs anything, and sends only that one title or link to your own PC over Aura\'s encrypted link. The only thing it does is go Back when you press Undo. Turn it off here at any time.</string>
+    <string name="aura_remote_a11y_label">Aura watch control</string>
+    <string name="aura_remote_a11y_summary">Lets your paired Galaxy Watch tap, scroll, go Back / Home and type on this phone.</string>
+    <string name="aura_remote_a11y_description">Aura Watch control listens to nothing: it receives no events from any app. It only acts when your own paired watch sends a touchpad move, tap, scroll, Back, Home, Recents or some text, and then it taps or swipes at the cursor shown on screen, or types into the field you have focused. Turn it off here at any time.</string>
+</resources>

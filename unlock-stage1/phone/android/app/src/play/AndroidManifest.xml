@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Play flavor overlay: removes everything Google Play policy rejects or restricts (publish/phone/SIGNING-AND-PLAY.md section 5).
+     Kotlin gates the matching code with BuildConfig.PLAY. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" tools:node="remove"/>
+    <uses-permission android:name="moe.shizuku.manager.permission.API_V23" tools:node="remove"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS" tools:node="remove"/>
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:node="remove"/>
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" tools:node="remove"/>
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" tools:node="remove"/>
+    <queries>
+        <package android:name="app.morphe.android.youtube" tools:node="remove"/>
+        <package android:name="app.morphe.android.apps.youtube.music" tools:node="remove"/>
+        <package android:name="app.rvx.android.apps.youtube.music" tools:node="remove"/>
+        <package android:name="com.facebook.katana" tools:node="remove"/>
+        <package android:name="com.facebook.lite" tools:node="remove"/>
+        <package android:name="com.facebook.orca" tools:node="remove"/>
+        <package android:name="com.whatsapp" tools:node="remove"/>
+        <package android:name="com.anthropic.claude" tools:node="remove"/>
+    </queries>
+    <application>
+        <service android:name=".zerotap.AuraAccessibility" tools:node="remove"/>
+        <service android:name=".watchlink.AuraRemoteAccessibility" tools:node="remove"/>
+        <activity android:name=".zerotap.ZeroTapSetupActivity" tools:node="remove"/>
+        <receiver android:name=".TestReceiver" tools:node="remove"/>
+        <provider android:name="rikka.shizuku.ShizukuProvider" tools:node="remove"/>
+    </application>
+</manifest>

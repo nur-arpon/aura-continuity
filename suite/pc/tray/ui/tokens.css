@@ -1,0 +1,22 @@
+/* Continuity design tokens - PLACEHOLDER, navy / blue only.
+   Replace with the tokens from D:\Claude-Projects\Continuity\design\ when the design agent
+   publishes them. Same values as phone/lib/core/tokens.dart (a unit test in pc/tray checks). */
+:root {
+  --navy-950: #070F22;
+  --navy-900: #0B1B3A;
+  --navy-800: #12264D;
+  --navy-700: #1B3463;
+  --navy-400: #4A608C;
+  --blue-500: #2F6FEB;
+  --blue-400: #5B8FF2;
+  --blue-300: #8EB6FF;
+  --blue-100: #DCE8FF;
+  --blue-50: #F1F6FF;
+
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-6: 24px;
+  --radius-s: 4px; --radius-m: 8px;
+  --font: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --text-s: 12px; --text-m: 14px; --text-l: 20px;
+  --dur-fast: 120ms; --dur-med: 200ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}

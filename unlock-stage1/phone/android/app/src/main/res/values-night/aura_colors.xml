@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Aura palette (design/tokens.css). Dark (navy, like the watch). -->
+<resources>
+    <color name="aura_w_bg_top">#FF13284D</color>
+    <color name="aura_w_bg_bottom">#FF0A1424</color>
+    <color name="aura_w_stroke">#FF223A61</color>
+    <color name="aura_w_text">#FFE9F0FB</color>
+    <color name="aura_w_text2">#FFB4C3DB</color>
+    <color name="aura_w_brand">#FF8EC5FF</color>
+    <color name="aura_w_btn">#FF1B3256</color>
+    <color name="aura_w_btn_text">#FFE9F0FB</color>
+    <color name="aura_w_primary">#FF5AA2FF</color>
+    <color name="aura_w_on_primary">#FF06142B</color>
+    <color name="aura_w_hero">#FF172A49</color>
+    <color name="aura_w_icon_bg">#FF1E3A66</color>
+    <color name="aura_w_success">#FF4CD3B4</color>
+    <color name="aura_w_warning">#FFF3B95F</color>
+    <color name="aura_splash">#FF0A1424</color>
+</resources>

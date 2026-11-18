@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Zero-tap continue (item 19): ONLY the owner's apps (mirrors ContinueRules.WATCHED). Window titles,
+     content descriptions and view ids; window changes only; nothing stored or logged. -->
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/aura_a11y_description"
+    android:summary="@string/aura_a11y_summary"
+    android:accessibilityEventTypes="typeWindowStateChanged|typeWindowContentChanged"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:accessibilityFlags="flagReportViewIds"
+    android:canRetrieveWindowContent="true"
+    android:canPerformGestures="false"
+    android:notificationTimeout="300"
+    android:isAccessibilityTool="false"
+    android:packageNames="app.morphe.android.youtube,com.google.android.youtube,app.morphe.android.apps.youtube.music,app.rvx.android.apps.youtube.music,com.google.android.apps.youtube.music,com.sec.android.app.sbrowser,com.sec.android.app.sbrowser.beta,com.brave.browser,com.android.chrome,com.facebook.katana,com.facebook.lite,com.facebook.orca,com.whatsapp,com.anthropic.claude,com.spotify.music"/>

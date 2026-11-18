@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Aura</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  /* "More from your phone" bubble (item 26): slides in near the tray when the phone pushes something new.
+     Never takes focus. Springs come from Motion (vendor/motion.js, MIT), not a hand-rolled engine. */
+  html, body { margin: 0; background: transparent; overflow: hidden; font: var(--type-body); user-select: none; }
+  .card { position: absolute; inset: 10px; display: flex; align-items: center; gap: 12px; padding: 0 8px 0 16px;
+    border-radius: 18px; background: #0d1b33; color: #eaf1ff; border: 1px solid rgba(120,170,255,.25);
+    box-shadow: 0 8px 28px rgba(0,0,0,.4); cursor: pointer; overflow: hidden; touch-action: none; will-change: transform, opacity;
+    opacity: 0; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #4f9bff; flex: none; box-shadow: 0 0 10px #4f9bff; }
+  .txt { flex: 1; min-width: 0; }
+  .t1 { font: var(--type-caption); color: #9fb6dd; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .t2 { font: var(--type-body-strong); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .go { flex: none; font: var(--type-body-strong); background: rgba(79,155,255,.2); border-radius: 999px; padding: 6px 14px; }
+  .card:hover .go { background: rgba(79,155,255,.38); }
+  .x { flex: none; width: 28px; height: 28px; border: 0; border-radius: 50%; background: transparent; color: #9fb6dd; font-size: 16px; cursor: pointer; }
+  .x:hover { background: rgba(255,255,255,.1); color: #fff; }
+  .bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: #4f9bff; transform-origin: left; opacity: .7; }
+</style>
+</head>
+<body>
+<div class="card" id="card" role="status">
+  <span class="dot"></span>
+  <div class="txt"><div class="t1" id="t1"></div><div class="t2" id="t2"></div></div>
+  <span class="go" id="go">Open</span>
+  <button class="x" id="x" aria-label="Dismiss">&#x2715;</button>
+  <div class="bar" id="bar"></div>
+</div>
+<script src="vendor/motion.js"></script>
+<script src="bubble.js"></script>
+</body>
+</html>

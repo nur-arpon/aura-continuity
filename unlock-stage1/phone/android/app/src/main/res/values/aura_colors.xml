@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Aura palette (design/tokens.css). Light. -->
+<resources>
+    <color name="aura_w_bg_top">#FFFAFCFF</color>
+    <color name="aura_w_bg_bottom">#FFE9F0FA</color>
+    <color name="aura_w_stroke">#FFD3DEED</color>
+    <color name="aura_w_text">#FF0B1A33</color>
+    <color name="aura_w_text2">#FF33466A</color>
+    <color name="aura_w_brand">#FF1D5FD0</color>
+    <color name="aura_w_btn">#FFE1E9F5</color>
+    <color name="aura_w_btn_text">#FF0B1A33</color>
+    <color name="aura_w_primary">#FF1D5FD0</color>
+    <color name="aura_w_on_primary">#FFFAFCFF</color>
+    <color name="aura_w_hero">#FFFFFFFF</color>
+    <color name="aura_w_icon_bg">#FF1D5FD0</color>
+    <color name="aura_w_success">#FF0A7360</color>
+    <color name="aura_w_warning">#FF8F5200</color>
+    <color name="aura_splash">#FFEEF3FA</color>
+</resources>

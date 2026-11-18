@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Aura PC: Microsoft Store (MSIX) package manifest TEMPLATE. Mirrors FileZ's
+  (D:\Claude-Projects\Tidy\src-tauri\msix\AppxManifest.xml). The double-brace placeholders are
+  filled by publish\pc\build-msix.ps1 from identity.json and tauri.conf.json.
+
+  CONTRACT: desktop:StartupTask/@TaskId must equal the id the app uses for packaged start-up
+  (see PC-PACKAGING.md, "Code changes the Store build needs"). The script checks it if a
+  packaged.rs exists in aura-pc\src-tauri\src.
+
+  runFullTrust: Aura is an ordinary Win32 process (tray, Bluetooth RFCOMM sockets, a named
+  pipe, LockWorkStation, global hotkeys, clipboard, low-level input). No narrower capability
+  covers that.
+  bluetooth: the phone and watch links use Windows.Devices.Bluetooth / RFCOMM.
+  internetClient + privateNetworkClientServer: the LAN fast path to the phone, and sockets over
+  Tailscale. Aura talks only to the user's own devices; there is no Aura server.
+  location: Windows hides the Wi-Fi network name from apps without it; Wake PC compares the
+  current network with the one it learned. Remove this line if Wake PC is cut from the Store build.
+  Not declared on purpose: broadFileSystemAccess, allowElevation, packagedServices, any
+  credential-provider or service extension (those need the separate installer).
+-->
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap desktop rescap">
+
+  <Identity
+    Name="{{IDENTITY_NAME}}"
+    Publisher="{{IDENTITY_PUBLISHER}}"
+    Version="{{VERSION}}"
+    ProcessorArchitecture="{{ARCH}}" />
+
+  <Properties>
+    <DisplayName>Aura</DisplayName>
+    <PublisherDisplayName>{{PUBLISHER_DISPLAY_NAME}}</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.26100.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="en-us" />
+  </Resources>
+
+  <Applications>
+    <Application Id="Aura" Executable="aura-pc.exe" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements
+        DisplayName="Aura"
+        Description="Continuity for your PC: unlock with your phone or watch, lock when you walk away, hand off what you were doing."
+        BackgroundColor="transparent"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png">
+        <uap:DefaultTile
+          Wide310x150Logo="Assets\Wide310x150Logo.png"
+          Square71x71Logo="Assets\Square71x71Logo.png"
+          Square310x310Logo="Assets\Square310x310Logo.png"
+          ShortName="Aura" />
+      </uap:VisualElements>
+      <Extensions>
+        <desktop:Extension Category="windows.startupTask" Executable="aura-pc.exe" EntryPoint="Windows.FullTrustApplication">
+          <desktop:StartupTask TaskId="AuraStartupTask" Enabled="false" DisplayName="Aura" />
+        </desktop:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+    <Capability Name="internetClient" />
+    <Capability Name="privateNetworkClientServer" />
+    <DeviceCapability Name="bluetooth" />
+    <DeviceCapability Name="location" />
+  </Capabilities>
+
+</Package>

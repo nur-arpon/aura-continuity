@@ -1,0 +1,20 @@
+[package]
+name = "aura-link"
+version = "0.1.0"
+edition = "2021"
+description = "Aura Link v1: one authenticated, multiplexed, resumable session per paired device (Bluetooth RFCOMM + LAN fast path). Portable core, no OS calls besides std::net."
+
+# Every dependency is a vetted RustCrypto crate (MIT OR Apache-2.0). No home-made primitives:
+# ECDH = p256, KDF = hkdf (RFC 5869), MAC = hmac, AEAD = aes-gcm (AES-256-GCM).
+[dependencies]
+aes-gcm = "0.10.3"
+hkdf = "0.12.4"
+hmac = "0.12.1"
+sha2 = "0.10.9"
+p256 = { version = "0.13.2", default-features = false, features = ["ecdh", "ecdsa", "pkcs8", "std", "alloc"] }
+getrandom = "0.3.4"
+hex = "0.4.3"
+subtle = "2.6.1"
+
+[profile.release]
+opt-level = 2

@@ -1,0 +1,12 @@
+[package]
+name = "watch-hint"
+version = "0.1.0"
+edition = "2021"
+description = "Check-only crate for the autolock patch: verifies phone->PC lock events (copy src/lib.rs into autolock as src/watch_hint.rs)."
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+hmac = "0.12.1"
+sha2 = "0.10.9"

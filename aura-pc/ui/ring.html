@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aura</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="ring.css">
+</head>
+<body>
+<main class="ring" role="alertdialog" aria-labelledby="t" aria-describedby="s">
+  <div class="pulse" aria-hidden="true"><i></i><i></i><i></i><img src="app-mark.svg" alt="" width="96" height="96"></div>
+  <h1 id="t">Your laptop is ringing</h1>
+  <p id="s">Someone is looking for it.</p>
+  <button id="found" class="found" type="button" autofocus>I found it</button>
+  <p class="hint">Press Enter, Space or Esc, or click anywhere</p>
+</main>
+<script src="ring.js"></script>
+</body>
+</html>

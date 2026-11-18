@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aura</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="side">
+    <div class="brand">
+      <img class="app-mark" src="app-mark.svg" alt="" width="36" height="36">
+      <div class="brand-text"><b>Aura</b><span>Continuity for your PC</span></div>
+    </div>
+    <nav class="nav" aria-label="Settings pages">
+      <button class="nav-item" data-page="unlock" type="button"><svg class="ic" aria-hidden="true"><use href="#i-unlock"/></svg><span>Unlock</span></button>
+      <button class="nav-item" data-page="lock" type="button"><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg><span>Lock</span></button>
+      <button class="nav-item" data-page="handoff" type="button"><svg class="ic" aria-hidden="true"><use href="#i-handoff"/></svg><span>Handoff</span></button>
+      <button class="nav-item" data-page="remote" type="button"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg><span>Remote</span></button>
+      <button class="nav-item" data-page="playing" type="button"><svg class="ic" aria-hidden="true"><use href="#i-volume"/></svg><span>Playing</span></button>
+<button class="nav-item" data-page="devices" type="button"><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg><span>Devices</span></button>
+      <button class="nav-item" data-page="about" type="button"><svg class="ic" aria-hidden="true"><use href="#i-info"/></svg><span>About</span></button>
+    </nav>
+    <div class="side-foot"><span id="sideMode" class="chip" data-tone="primary">Dry run</span></div>
+  </aside>
+
+  <main class="main" id="main">
+    <!-- ============================================================ UNLOCK -->
+    <section class="page" id="page-unlock" hidden aria-labelledby="unlockT">
+      <header class="page-head"><h1 id="unlockT">Unlock</h1><p>Sign in to Windows from your phone or watch, without typing.</p></header>
+      <section id="uHero" class="hero reveal" data-tone="neutral" aria-live="polite" aria-atomic="true">
+        <div class="hero-well"><svg class="ic" aria-hidden="true"><use id="uHeroIcon" href="#i-unlock"/></svg></div>
+        <div class="hero-title" id="uHeroTitle">Checking&hellip;</div>
+        <div class="hero-sub" id="uHeroSub">Asking the Aura service</div>
+      </section>
+
+      <section class="section reveal" style="--i:1" aria-labelledby="uDevH">
+        <div class="section-head"><h2 id="uDevH">Your devices</h2><span class="meta">Bluetooth only</span></div>
+        <div class="group">
+          <div class="row" id="uPhone">
+            <span class="dev-icon"><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg></span>
+            <span class="row-text"><span class="row-label" data-k="name">Phone</span><span class="row-desc" data-k="desc"></span></span>
+            <span class="chip-slot" data-k="chip"></span>
+          </div>
+          <div class="row" id="uWatch">
+            <span class="dev-icon"><svg class="ic" aria-hidden="true"><use href="#i-watch"/></svg></span>
+            <span class="row-text"><span class="row-label" data-k="name">Watch</span><span class="row-desc" data-k="desc"></span></span>
+            <span class="chip-slot" data-k="chip"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" style="--i:2" aria-labelledby="uSetH">
+        <div class="section-head"><h2 id="uSetH">Sign-in</h2></div>
+        <div class="group">
+          <label class="row clickable" for="handsFree">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-unlock"/></svg>
+            <span class="row-text">
+              <span class="row-label">Hands-free sign-in</span>
+              <span class="row-desc">The sign-in screen asks your phone or watch to approve. Off = PIN only</span>
+            </span>
+            <input id="handsFree" type="checkbox" class="switch" role="switch">
+          </label>
+        </div>
+        <p class="section-note">Aura never sees or stores your password or PIN. It only answers &ldquo;has my paired phone or watch approved this sign-in?&rdquo;, and your PIN always keeps working.</p>
+      </section>
+
+      <section class="section reveal" style="--i:3" aria-labelledby="uAwayH">
+        <div class="section-head"><h2 id="uAwayH">When you are away</h2><span class="meta" id="uAwayMeta">Over Tailscale</span></div>
+        <div class="group">
+          <label class="row clickable" for="remoteUnlock">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-globe"/></svg>
+            <span class="row-text">
+              <span class="row-label">Unlock PC from my phone when away</span>
+              <span class="row-desc">Only when you press Unlock PC in the phone app and touch the fingerprint sensor. Never automatic over the internet</span>
+            </span>
+            <input id="remoteUnlock" type="checkbox" class="switch" role="switch">
+          </label>
+          <label class="row clickable" for="remotePower">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-globe"/></svg>
+            <span class="row-text">
+              <span class="row-label">Restart, shut down or sleep this PC from my phone</span>
+              <span class="row-desc">Your paired phone or watch can send the command; Windows gives 15 seconds before a restart or shut down. Logged in the list below</span>
+            </span>
+            <input id="remotePower" type="checkbox" class="switch" role="switch">
+          </label>
+          <label class="row clickable" for="stayReachable">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-timer"/></svg>
+            <span class="row-text">
+              <span class="row-label">Stay reachable while plugged in</span>
+              <span class="row-desc">Stops idle sleep and makes closing the lid do nothing on mains power, so your phone can reach or wake this PC. The screen can still turn off. On battery, normal sleep applies</span>
+            </span>
+            <input id="stayReachable" type="checkbox" class="switch" role="switch">
+          </label>
+          <label class="row clickable" for="shareRecent">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-globe"/></svg>
+            <span class="row-text">
+              <span class="row-label">Share recent tabs with my phone</span>
+              <span class="row-desc">When your phone asks, it sees what is playing, your open tabs and pages from the last hour (titles and links only, never stored)</span>
+            </span>
+            <input id="shareRecent" type="checkbox" class="switch" role="switch">
+          </label>
+          <label class="row clickable" for="relock">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-timer"/></svg>
+            <span class="row-text">
+              <span class="row-label">Lock again after a remote unlock</span>
+              <span class="row-desc" id="relockD">When nobody uses this PC for that long</span>
+            </span>
+            <input id="relock" type="checkbox" class="switch" role="switch">
+          </label>
+          <div class="row sub" id="relockRow">
+            <span class="row-text"><span class="row-label" id="relockMinL">Lock after</span></span>
+            <span class="field"><input id="relockMin" type="number" min="1" max="240" step="1" inputmode="numeric" aria-labelledby="relockMinL"><span class="unit">min</span></span>
+          </div>
+        </div>
+        <div class="group" id="remoteLog" aria-label="Recent remote actions"></div>
+        <p class="section-note">A remote unlock goes through the same sign-in approval as your watch: the Windows sign-in screen must be asking (wake it, for example over remote desktop). This PC shows a notification afterwards, and your phone gets a confirmation.</p>
+      </section>
+
+      <section class="section reveal" style="--i:4" aria-labelledby="uLastH">
+        <div class="section-head"><h2 id="uLastH">Last approvals</h2><span class="meta">From the sign-in screen</span></div>
+        <div class="group" id="approvals"></div>
+      </section>
+    </section>
+
+    <!-- ============================================================ LOCK -->
+    <section class="page" id="page-lock" hidden aria-labelledby="lockT">
+      <header class="page-head"><h1 id="lockT">Lock</h1><p>Locks this PC when you walk away with your phone or watch.</p></header>
+      <section id="hero" class="hero reveal" data-tone="neutral" aria-live="polite" aria-atomic="true">
+        <div class="hero-well"><svg class="ic" aria-hidden="true"><use id="heroIcon" href="#i-shield"/></svg></div>
+        <div class="hero-title" id="heroTitle">Starting&hellip;</div>
+        <div class="hero-sub" id="heroSub">Checking Bluetooth</div>
+        <div class="hero-meter" id="meter" hidden><i></i></div>
+      </section>
+
+      <section class="section reveal" style="--i:1" aria-labelledby="modeH">
+        <div class="section-head"><h2 id="modeH">Mode</h2></div>
+        <div class="group">
+          <label class="row clickable" for="liveMode">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-lock"/></svg>
+            <span class="row-text">
+              <span class="row-label">Live: really lock this PC</span>
+              <span class="row-desc" id="liveD">Off = dry run: you get a notification instead of a lock</span>
+            </span>
+            <input id="liveMode" type="checkbox" class="switch" role="switch">
+          </label>
+          <div class="row">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-pause"/></svg>
+            <span class="row-text">
+              <span class="row-label" id="pauseL">Pause auto-lock</span>
+              <span class="row-desc" id="pauseD">For one hour, then it resumes by itself</span>
+            </span>
+            <button id="pauseBtn" class="btn" type="button">Pause 1 hour</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" style="--i:2" aria-labelledby="devH">
+        <div class="section-head">
+          <h2 id="devH">Devices to watch</h2>
+          <span class="meta">Bluetooth only, works with Wi-Fi off</span>
+        </div>
+        <div class="group" id="devices">
+          <div class="row"><span class="row-text"><span class="row-label">Looking for paired devices&hellip;</span></span></div>
+        </div>
+      </section>
+
+      <section class="section reveal" style="--i:3" aria-labelledby="ruleH">
+        <div class="section-head"><h2 id="ruleH">Lock rule</h2></div>
+        <div class="group">
+          <div class="row">
+            <span class="row-text">
+              <label class="row-label" for="absent">Lock after I've been away for</label>
+              <span class="row-desc">5 to 600 seconds</span>
+            </span>
+            <span class="field"><input id="absent" type="number" min="5" max="600" step="1" inputmode="numeric"><span class="unit">sec</span></span>
+          </div>
+          <div class="row">
+            <span class="row-text">
+              <span class="row-label" id="whenL">Lock when</span>
+              <span class="row-desc" id="whenD">With more than one device</span>
+            </span>
+            <div class="seg" role="radiogroup" aria-labelledby="whenL" aria-describedby="whenD">
+              <label><input type="radio" name="when" value="all_absent"><span>All are away</span></label>
+              <label><input type="radio" name="when" value="any_absent"><span>Any is away</span></label>
+            </div>
+          </div>
+          <label class="row clickable" for="userssi">
+            <span class="row-text">
+              <span class="row-label">Use signal strength</span>
+              <span class="row-desc">Count a weak signal as away, not just a lost one</span>
+            </span>
+            <input id="userssi" type="checkbox" class="switch" role="switch">
+          </label>
+          <div class="row sub stack" id="rssirow">
+            <span class="row-text">
+              <label class="row-label" for="rssi">Away when weaker than</label>
+              <span class="row-desc">Lower is farther away. Around &minus;90 suits a phone in a pocket.</span>
+            </span>
+            <input id="rssi" class="range" type="range" min="-100" max="-50" step="1" aria-describedby="rssival">
+            <span class="value-badge" id="rssival">&minus;90 dBm</span>
+          </div>
+          <label class="row clickable" for="fullscreen">
+            <span class="row-text">
+              <span class="row-label">Never lock during fullscreen video or slides</span>
+              <span class="row-desc">Holds the lock while a game, film or presentation fills the screen</span>
+            </span>
+            <input id="fullscreen" type="checkbox" class="switch" role="switch">
+          </label>
+          <div class="row">
+            <span class="row-text">
+              <label class="row-label" for="ping">Check a disconnected device every</label>
+              <span class="row-desc">5 to 120 seconds. Shorter notices you leaving sooner.</span>
+            </span>
+            <span class="field"><input id="ping" type="number" min="5" max="120" step="1" inputmode="numeric"><span class="unit">sec</span></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" style="--i:4" aria-labelledby="guardH">
+        <div class="section-head"><h2 id="guardH">False-lock guard</h2><span class="meta">Stops a lock while you are still here</span></div>
+        <div class="group">
+          <div class="row">
+            <span class="row-text">
+              <label class="row-label" for="idleGuard">Not within this long of typing or mouse use</label>
+              <span class="row-desc">0 turns it off. Default 60 seconds.</span>
+            </span>
+            <span class="field"><input id="idleGuard" type="number" min="0" max="3600" step="1" inputmode="numeric"><span class="unit">sec</span></span>
+          </div>
+          <div class="row">
+            <span class="row-text">
+              <label class="row-label" for="minMisses">Away must be seen this many checks in a row</label>
+              <span class="row-desc">One check per second. Default 5.</span>
+            </span>
+            <span class="field"><input id="minMisses" type="number" min="1" max="60" step="1" inputmode="numeric"><span class="unit">checks</span></span>
+          </div>
+          <div class="row">
+            <span class="row-text">
+              <label class="row-label" for="singleSignal">With only one device, wait</label>
+              <span class="row-desc">Nothing backs it up, so it needs longer. 20 to 900 seconds, default 60.</span>
+            </span>
+            <span class="field"><input id="singleSignal" type="number" min="20" max="900" step="1" inputmode="numeric"><span class="unit">sec</span></span>
+          </div>
+          <label class="row clickable" for="offwrist">
+            <span class="row-text">
+              <span class="row-label">Lock sooner when the watch comes off</span>
+              <span class="row-desc">An off-wrist or out-of-range hint shortens the countdown</span>
+            </span>
+            <input id="offwrist" type="checkbox" class="switch" role="switch">
+          </label>
+          <div class="row sub" id="offwristRow">
+            <span class="row-text">
+              <label class="row-label" for="offwristSecs">Countdown after the hint</label>
+              <span class="row-desc">2 to 120 seconds, default 5</span>
+            </span>
+            <span class="field"><input id="offwristSecs" type="number" min="2" max="120" step="1" inputmode="numeric"><span class="unit">sec</span></span>
+          </div>
+          <label class="row clickable" for="linkSignals">
+            <span class="row-text">
+              <span class="row-label">Listen for Lock PC from the phone and watch</span>
+              <span class="row-desc">The Lock PC button. Takes effect after Aura restarts</span>
+            </span>
+            <input id="linkSignals" type="checkbox" class="switch" role="switch">
+          </label>
+        </div>
+        <p class="section-note">Always on: never locks within 60 seconds of you signing in, never more than once every 2 minutes, and waits to see your devices again after each lock.</p>
+      </section>
+
+      <div class="page-foot">
+        <span id="saved" class="status-note" role="status" aria-live="polite"></span>
+        <span class="spacer"></span>
+        <button id="revert" class="btn" type="button" hidden>Undo changes</button>
+        <button id="save" class="btn btn-primary" type="button" disabled title="Save (Ctrl+S)">Save</button>
+      </div>
+    </section>
+
+    <!-- ============================================================ HANDOFF -->
+    <section class="page" id="page-handoff" hidden aria-labelledby="handT">
+      <header class="page-head"><h1 id="handT">Handoff</h1><p>Send what you are looking at between this PC and your phone.</p></header>
+      <section id="hHero" class="hero reveal" data-tone="neutral" aria-live="polite" aria-atomic="true">
+        <div class="hero-well"><svg class="ic" aria-hidden="true"><use id="hHeroIcon" href="#i-phone"/></svg></div>
+        <div class="hero-title" id="hPeer">Looking for your phone&hellip;</div>
+        <div class="hero-sub" id="hSub">Asking the Aura service</div>
+      </section>
+
+      <section class="section reveal" style="--i:1" aria-labelledby="hkH">
+        <div class="section-head"><h2 id="hkH">Shortcuts</h2></div>
+        <div class="group">
+          <div class="row">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-keyboard"/></svg>
+            <span class="row-text">
+              <span class="row-label" id="hotkeyL">Send to phone</span>
+              <span class="row-desc" id="hotkeyD">Sends the open tab, selected files, selected text or clipboard</span>
+            </span>
+            <button id="hotkey" class="hotkey" type="button" aria-labelledby="hotkeyL" aria-describedby="hotkeyD hotkeyError"></button>
+          </div>
+          <div class="row-error" id="hotkeyError" role="alert" hidden></div>
+          <div class="row">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-send"/></svg>
+            <span class="row-text">
+              <span class="row-label" id="snipL">Snip to phone</span>
+              <span class="row-desc" id="snipD">Drag a region of the screen; the picture lands on the phone</span>
+            </span>
+            <button id="snipKey" class="hotkey" type="button" aria-labelledby="snipL" aria-describedby="snipD snipError"></button>
+          </div>
+          <div class="row-error" id="snipError" role="alert" hidden></div>
+        </div>
+      </section>
+
+      <section class="section reveal" style="--i:2" aria-labelledby="sendH">
+        <div class="section-head"><h2 id="sendH">Sending</h2></div>
+        <div class="group">
+          <label class="row clickable" for="youtubeTimestamp">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-play"/></svg>
+            <span class="row-text">
+              <span class="row-label">Carry on YouTube where you left off</span>
+              <span class="row-desc">Adds the current time to the link when it can be read</span>
+            </span>
+            <input type="checkbox" id="youtubeTimestamp" class="switch" role="switch">
+          </label>
+          <label class="row clickable" for="clipboardSync">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-copy"/></svg>
+            <span class="row-text">
+              <span class="row-label">Share the clipboard</span>
+              <span class="row-desc">Text and pictures you copy go to the other device. Off until you turn it on</span>
+            </span>
+            <input type="checkbox" id="clipboardSync" class="switch" role="switch">
+          </label>
+          <label class="row clickable" for="suggest">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+            <span class="row-text">
+              <span class="row-label">Suggest Continue on phone / PC</span>
+              <span class="row-desc">A quiet offer when the other device shows something you can carry on</span>
+            </span>
+            <input type="checkbox" id="suggest" class="switch" role="switch">
+          </label>
+          <label class="row clickable" for="phoneBubble">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+            <span class="row-text">
+              <span class="row-label">Show a bubble for new things from your phone</span>
+              <span class="row-desc">A small flyout slides in near the tray; one click opens it. It never takes focus and hides itself</span>
+            </span>
+            <input type="checkbox" id="phoneBubble" class="switch" role="switch">
+          </label>
+          <label class="row clickable" for="phoneLinksInApp">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+            <span class="row-text">
+              <span class="row-label">Open phone links in their app</span>
+              <span class="row-desc">Links open in the app Windows has for them (LinkedIn, Spotify...); off = in Brave. YouTube always opens in Brave at the exact second</span>
+            </span>
+            <input type="checkbox" id="phoneLinksInApp" class="switch" role="switch">
+          </label>
+          <div class="row drop" id="drop">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-folder"/></svg>
+            <span class="row-text">
+              <span class="row-label">Drop files here to send them</span>
+              <span class="row-desc" id="dropD">They land in Download/Aura on the phone</span>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" style="--i:3" aria-labelledby="recvH">
+        <div class="section-head"><h2 id="recvH">From your phone</h2></div>
+        <div class="group">
+          <label class="row clickable" for="openInBrave">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-globe"/></svg>
+            <span class="row-text">
+              <span class="row-label">Open links in Brave</span>
+              <span class="row-desc">Otherwise they open in your default browser</span>
+            </span>
+            <input type="checkbox" id="openInBrave" class="switch" role="switch">
+          </label>
+          <div class="row">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-inbox"/></svg>
+            <span class="row-text">
+              <span class="row-label">Received files</span>
+              <span class="row-desc path" id="inboxPath"></span>
+            </span>
+            <button id="openInbox" class="btn" type="button">Open folder</button>
+          </div>
+        </div>
+        <p class="section-note">Links open at once. Everything else the phone shares is listed under From phone in the tray icon menu.</p>
+      </section>
+    </section>
+
+    <!-- ============================================================ DEVICES -->
+    <section class="page" id="page-remote" hidden aria-labelledby="remT">
+      <header class="page-head"><h1 id="remT">Remote</h1><p>Find your phone, ring this laptop, and drive music and slides from your phone or watch.</p></header>
+
+      <section class="section reveal" style="--i:0" aria-labelledby="mirH">
+        <div class="section-head"><h2 id="mirH">Phone screen</h2></div>
+        <div class="group">
+          <div class="row">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+            <span class="row-text"><span class="row-label">Show phone</span><span class="row-desc" id="mirDesc">Your phone's screen in a window here, with sound, clipboard and mouse control. USB, Wi-Fi or Tailscale, whichever is available</span></span>
+            <button id="mirShow" class="btn btn-primary" type="button">Show phone</button>
+          </div>
+          <div class="row">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+            <span class="row-text"><span class="row-label">Show watch</span><span class="row-desc" id="watDesc">Your watch's screen in a small window here (own window, runs beside the phone). Needs Wireless debugging on the watch; mouse wheel scrolls it</span></span>
+            <button id="watShow" class="btn" type="button">Show watch</button>
+          </div>
+          <div class="row" id="watPairRow" hidden>
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+            <span class="row-text"><span class="row-label">Pair the watch</span><span class="row-desc">On the watch: Settings &gt; Developer options &gt; Wireless debugging &gt; Pair new device, then type the address and 6-digit code it shows</span>
+              <span style="display:flex;gap:8px;margin-top:6px"><input id="watAddr" placeholder="192.168.1.20:37215" autocomplete="off" spellcheck="false" style="width:170px"><input id="watCode" placeholder="6-digit code" inputmode="numeric" maxlength="6" autocomplete="off" style="width:110px"></span></span>
+            <button id="watPair" class="btn" type="button">Pair</button>
+          </div>
+          <div class="row">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+            <span class="row-text"><span class="row-label">Enable over Tailscale</span><span class="row-desc" id="mirRemDesc">Plug the phone in once. Lets Show phone work away from home. Needed again after the phone restarts</span></span>
+            <button id="mirRemote" class="btn" type="button">Enable</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" style="--i:1" aria-labelledby="appsH">
+        <div class="section-head"><h2 id="appsH">Recent on phone</h2></div>
+        <div class="group" id="phoneApps"></div>
+        <p class="section-note" id="phoneAppsNote">Opens one app in its own window here, on a hidden second screen, so your phone's screen stays free. Several apps can be open at once.</p>
+      </section>
+
+      <section class="section reveal" style="--i:1" aria-labelledby="lapH">
+        <div class="section-head"><h2 id="lapH">Laptop on phone</h2></div>
+        <div class="group">
+          <div class="row">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+            <span class="row-text"><span class="row-label">Control this PC from your phone</span><span class="row-desc" id="sunDesc">Starts the Sunshine stream host. The phone uses Moonlight to see and control this screen, at home or over Tailscale</span></span>
+            <button id="sunToggle" class="btn btn-primary" type="button">Start</button>
+          </div>
+          <div class="row">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+            <span class="row-text"><span class="row-label">Pair phone</span><span class="row-desc" id="sunPairDesc">In Moonlight on the phone, tap this PC, then type here the 4 digits it shows</span></span>
+            <span class="field"><input id="sunPin" type="text" maxlength="4" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-label="PIN shown by Moonlight"></span>
+            <button id="sunPair" class="btn" type="button">Pair</button>
+          </div>
+          <div class="row">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+            <span class="row-text"><span class="row-label">Send addresses to phone</span><span class="row-desc" id="sunSendDesc">The phone gets this PC's home and Tailscale addresses by itself, so it never needs typing. Use this to send them again</span></span>
+            <button id="sunSend" class="btn" type="button">Send</button>
+          </div>
+          <div class="row">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+            <span class="row-text"><span class="row-label">Send Moonlight to phone</span><span class="row-desc" id="sunApkDesc">If the phone does not have Moonlight, this sends the official installer (the phone's Open laptop button also opens Google Play)</span></span>
+            <button id="sunApk" class="btn" type="button">Send</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" style="--i:0" aria-labelledby="headsH">
+        <div class="section-head"><h2 id="headsH">Chat heads</h2></div>
+        <div class="group">
+          <label class="row clickable" for="headsOn">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+            <span class="row-text"><span class="row-label">Aura head on this screen</span><span class="row-desc">A bubble at the screen edge: tap it for your phone's recent apps, tap a phone browser for its pages. Hides itself during full-screen apps and presentations. Also sends this PC's recent apps and tabs to the phone's head</span></span>
+            <input id="headsOn" type="checkbox" class="switch" role="switch">
+          </label>
+          <div class="row" id="headsSnoozeRow">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+            <span class="row-text"><span class="row-label">When I throw the head on the X</span><span class="row-desc">The head only goes away when you drag it onto the X. Choose whether it then comes back by itself</span></span>
+            <select id="headsSnooze" class="btn" aria-label="When the head is thrown on the X">
+              <option value="snooze">Come back after 30 min</option>
+              <option value="manual">Keep hidden until I turn it back on</option>
+            </select>
+          </div>
+          <div class="row" id="headsShowRow" hidden>
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+            <span class="row-text"><span class="row-label">The head is hidden</span><span class="row-desc" id="headsShowDesc">You threw it on the X</span></span>
+            <button id="headsShow" class="btn" type="button">Show it again</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" style="--i:0" aria-labelledby="budsH">
+        <div class="section-head"><h2 id="budsH">Galaxy Buds</h2></div>
+        <div class="group">
+          <label class="row clickable" for="budsFollow">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+            <span class="row-text"><span class="row-label">Buds follow what's playing</span><span class="row-desc" id="budsDesc">Your Buds Core move between this PC and your phone</span></span>
+            <input id="budsFollow" type="checkbox" class="switch" role="switch">
+          </label>
+          <div class="row">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+            <span class="row-text"><span class="row-label">Move Buds here</span><span class="row-desc" id="budsNote">&nbsp;</span></span>
+            <button id="budsMove" class="btn" type="button">Move Buds here</button>
+          </div>
+        </div>
+      </section>
+      <section class="section reveal" style="--i:1" aria-labelledby="ringH">
+        <div class="section-head"><h2 id="ringH">Ring</h2></div>
+        <div class="group">
+          <div class="row">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-phone"/></svg>
+            <span class="row-text"><span class="row-label">Ring my phone</span><span class="row-desc" id="rPhoneDesc">Rings at full volume, even on silent, until you touch it</span></span>
+            <button id="ringPhone" class="btn btn-primary" type="button">Ring my phone</button>
+          </div>
+          <div class="row">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-bell"/></svg>
+            <span class="row-text"><span class="row-label">Try the laptop ring</span><span class="row-desc" id="rTestDesc">Plays the chime and shows the alert until you dismiss it</span></span>
+            <button id="ringTest" class="btn" type="button">Try it</button>
+          </div>
+          <label class="row clickable" for="rRing">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-laptop"/></svg>
+            <span class="row-text"><span class="row-label">Let my phone and watch ring this laptop</span><span class="row-desc">A loud chime and a full alert until you dismiss it</span></span>
+            <input id="rRing" type="checkbox" class="switch" role="switch">
+          </label>
+          <label class="row clickable" for="rFull">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-volume"/></svg>
+            <span class="row-text"><span class="row-label">Ring at full volume</span><span class="row-desc">Raises the speakers while it rings, then puts your volume back</span></span>
+            <input id="rFull" type="checkbox" class="switch" role="switch">
+          </label>
+        </div>
+      </section>
+
+      <section class="section reveal" style="--i:2" aria-labelledby="medH">
+        <div class="section-head"><h2 id="medH">Music and video</h2></div>
+        <div class="card" id="rNow">
+          <div class="card-top">
+            <span class="dev-icon big"><svg class="ic" aria-hidden="true"><use href="#i-volume"/></svg></span>
+            <span class="row-text"><span class="row-label" id="rTitle">Nothing playing</span><span class="row-desc" id="rArtist">Start something on this PC</span></span>
+            <span class="chip-slot" id="rChip"></span>
+          </div>
+          <div class="card-actions">
+            <button class="btn" type="button" data-media="3" aria-label="Previous"><svg class="ic sm" aria-hidden="true"><use href="#i-prev"/></svg></button>
+            <button class="btn btn-primary" type="button" data-media="1" aria-label="Play or pause"><svg class="ic sm" aria-hidden="true"><use href="#i-playtri"/></svg>Play / pause</button>
+            <button class="btn" type="button" data-media="2" aria-label="Next"><svg class="ic sm" aria-hidden="true"><use href="#i-next"/></svg></button>
+            <button class="btn" type="button" data-media="5">Volume -</button>
+            <button class="btn" type="button" data-media="6">Mute</button>
+            <button class="btn" type="button" data-media="4">Volume +</button>
+          </div>
+        </div>
+        <div class="group">
+          <label class="row clickable" for="rMedia">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-play"/></svg>
+            <span class="row-text"><span class="row-label">Let my phone and watch control media</span><span class="row-desc">Play, pause, next, previous and volume, with the title and artwork shown on them</span></span>
+            <input id="rMedia" type="checkbox" class="switch" role="switch">
+          </label>
+        </div>
+      </section>
+
+      <section class="section reveal" style="--i:3" aria-labelledby="inpH">
+        <div class="section-head"><h2 id="inpH">Mouse and keyboard</h2></div>
+        <div class="group">
+          <label class="row clickable" for="rInput">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-keyboard"/></svg>
+            <span class="row-text"><span class="row-label">Allow mouse &amp; keyboard from phone/watch</span><span class="row-desc">The touchpad, Air mouse and typing on your phone or watch move the pointer and type here. A small pill at the top of the screen shows while they do</span></span>
+            <input id="rInput" type="checkbox" class="switch" role="switch">
+          </label>
+        </div>
+        <p class="section-note">Nothing is accepted while this PC is locked.</p>
+      </section>
+
+      <section class="section reveal" style="--i:4" aria-labelledby="preH">
+        <div class="section-head"><h2 id="preH">Presentation remote</h2></div>
+        <div class="group">
+          <label class="row clickable" for="rPres">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-slides"/></svg>
+            <span class="row-text"><span class="row-label">Let my phone and watch change slides</span><span class="row-desc">Next, previous, blank screen, start and end. Works in PowerPoint, Google Slides and PDFs</span></span>
+            <input id="rPres" type="checkbox" class="switch" role="switch">
+          </label>
+        </div>
+        <p class="section-note">Only the arrow keys, B, W, F5 and Esc are ever sent, to the window in front. Nothing is sent while this PC is locked.</p>
+      </section>
+    </section>
+
+    <section class="page" id="page-playing" hidden aria-labelledby="npT">
+      <header class="page-head"><h1 id="npT">Now playing</h1><p>Everything playing on this laptop and your phone, each one controllable from here. Phone notifications show up as toasts.</p></header>
+
+      <section class="section reveal" style="--i:0" aria-labelledby="npH">
+        <div class="section-head"><h2 id="npH">Playing now</h2><span class="meta" id="npMeta"></span></div>
+        <div id="npList" class="np-list" aria-live="polite"></div>
+      </section>
+
+      <section class="section reveal" style="--i:1" aria-labelledby="nmH">
+        <div class="section-head"><h2 id="nmH">Phone notifications on this PC</h2></div>
+        <div class="group">
+          <label class="row clickable" for="nmOn">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-bell"/></svg>
+            <span class="row-text"><span class="row-label">Show my phone's notifications here</span><span class="row-desc">New, audible notifications become Windows toasts with Dismiss (clears it on the phone too) and Reply for chat apps. Silent, ongoing and Aura's own are left out</span></span>
+            <input id="nmOn" type="checkbox" class="switch" role="switch">
+          </label>
+          <div class="row">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-send"/></svg>
+            <span class="row-text"><span class="row-label">Try it</span><span class="row-desc">A test toast with the Reply box, without the phone</span></span>
+            <button id="nmTest" class="btn" type="button">Show test toast</button>
+          </div>
+        </div>
+        <div class="group" id="nmApps"></div>
+        <p class="section-note" id="nmNote">Apps appear here after their first notification. Turn one off to stop its toasts.</p>
+      </section>
+    </section>
+
+    <section class="page" id="page-devices" hidden aria-labelledby="devT">
+      <header class="page-head"><h1 id="devT">Devices</h1><p>The phone and watch paired with this PC.</p></header>
+      <div class="banner reveal" id="restartBanner" hidden>
+        <svg class="ic" aria-hidden="true"><use href="#i-refresh"/></svg>
+        <span class="banner-text"><b>Restart Aura to apply</b>The pairing changed. Aura Link and the sign-in screen use the new pairing after a restart.</span>
+        <button id="restartNow" class="btn btn-primary" type="button">Restart Aura</button>
+      </div>
+
+      <section class="section reveal" style="--i:1" aria-labelledby="phoneH">
+        <div class="section-head"><h2 id="phoneH">Main phone</h2><span class="meta">Unlocks this PC</span></div>
+        <div class="card" id="dPhone">
+          <div class="card-top">
+            <span class="dev-icon big"><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg></span>
+            <span class="row-text"><span class="row-label" data-k="name">Phone</span><span class="row-desc" data-k="desc"></span></span>
+            <span class="chip-slot" data-k="chip"></span>
+          </div>
+          <div class="card-actions">
+            <button class="btn" type="button" data-act="repair-phone"><svg class="ic sm" aria-hidden="true"><use href="#i-refresh"/></svg>Replace main phone&hellip;</button>
+            <button class="btn" type="button" data-act="forget-phone"><svg class="ic sm" aria-hidden="true"><use href="#i-trash"/></svg>Forget</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" style="--i:2" aria-labelledby="compH">
+        <div class="section-head"><h2 id="compH">Other phones</h2><span class="meta">Companions: share and control, never unlock</span></div>
+        <div class="group" id="dCompanions">
+          <div class="row"><span class="row-text"><span class="row-label">Looking for paired phones&hellip;</span></span></div>
+        </div>
+        <div class="card-actions" style="margin-top:8px">
+          <button class="btn" type="button" data-act="add-companion"><svg class="ic sm" aria-hidden="true"><use href="#i-phone"/></svg>Add another phone&hellip;</button>
+        </div>
+        <p class="section-note">A companion phone has its own key. It can send the clipboard and files, use Continue and the chat head, and control this PC's mouse, keyboard and media. It can never unlock, lock or restart this PC. Removing one never affects the main phone.</p>
+      </section>
+
+      <section class="section reveal" style="--i:2" aria-labelledby="watchH">
+        <div class="section-head"><h2 id="watchH">Watch</h2></div>
+        <div class="card" id="dWatch">
+          <div class="card-top">
+            <span class="dev-icon big"><svg class="ic" aria-hidden="true"><use href="#i-watch"/></svg></span>
+            <span class="row-text"><span class="row-label" data-k="name">Watch</span><span class="row-desc" data-k="desc"></span></span>
+            <span class="chip-slot" data-k="chip"></span>
+          </div>
+          <div class="card-actions">
+            <button class="btn" type="button" data-act="pair-watch"><svg class="ic sm" aria-hidden="true"><use href="#i-refresh"/></svg>Pair&hellip;</button>
+            <button class="btn" type="button" data-act="forget-watch"><svg class="ic sm" aria-hidden="true"><use href="#i-trash"/></svg>Forget</button>
+          </div>
+        </div>
+        <p class="section-note">Forgetting moves the pairing files to a dated backup folder next to them; nothing is deleted. Pairing a new phone or watch needs the device in your hand.</p>
+      </section>
+
+      <section class="section reveal" style="--i:3" aria-labelledby="awayH">
+        <div class="section-head"><h2 id="awayH">Away mode</h2><span class="meta">Aura Link over Tailscale</span></div>
+        <div class="card" id="dAway" aria-live="polite">
+          <div class="card-top">
+            <span class="dev-icon big"><svg class="ic" aria-hidden="true"><use href="#i-globe"/></svg></span>
+            <span class="row-text"><span class="row-label" id="awayTitle">Checking Tailscale&hellip;</span><span class="row-desc" id="awayText"></span></span>
+            <span class="chip-slot" id="awayChip"></span>
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-primary" type="button" id="awayAction" hidden></button>
+            <button class="btn" type="button" id="awayWinget" hidden><svg class="ic sm" aria-hidden="true"><use href="#i-copy"/></svg>Copy winget command</button>
+            <button class="btn" type="button" id="awayRefresh"><svg class="ic sm" aria-hidden="true"><use href="#i-refresh"/></svg>Check again</button>
+          </div>
+        </div>
+        <div class="group facts" id="awayFacts">
+          <div class="row"><span class="row-label">This PC on the tailnet</span><span class="fact mono" id="awayPc">-</span></div>
+          <div class="row"><span class="row-label">Your phone on the tailnet</span><span class="fact mono" id="awayPhone">-</span></div>
+        </div>
+        <div class="group">
+          <label class="row clickable" for="awayMode">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-link"/></svg>
+            <span class="row-text">
+              <span class="row-label">Away mode</span>
+              <span class="row-desc">Your phone reaches this PC from anywhere when Bluetooth is out of reach. Same end-to-end encryption as Bluetooth</span>
+            </span>
+            <input id="awayMode" type="checkbox" class="switch" role="switch">
+          </label>
+        </div>
+        <p class="section-note">Tailscale is the network only: Aura Link encrypts everything end to end with your pairing, so Tailscale never sees what you send. The phone fetches what you were doing when you open Aura; nothing is sent in the background.</p>
+      </section>
+    </section>
+
+    <!-- ============================================================ ABOUT -->
+    <section class="page" id="page-about" hidden aria-labelledby="aboutT">
+      <header class="page-head"><h1 id="aboutT">About</h1><p>Aura for PC</p></header>
+      <section class="about-hero reveal">
+        <img class="about-mark" src="app-mark.svg" alt="" width="72" height="72">
+        <div>
+          <div class="about-name">Aura</div>
+          <div class="about-sub">Continuity for your PC</div>
+          <div class="about-ver" id="aboutVer"></div>
+        </div>
+      </section>
+
+      <section class="section reveal" style="--i:1" aria-labelledby="genH">
+        <div class="section-head"><h2 id="genH">General</h2></div>
+        <div class="group">
+          <label class="row clickable" for="autostart">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-power"/></svg>
+            <span class="row-text">
+              <span class="row-label">Start with Windows</span>
+              <span class="row-desc">Applies right away</span>
+            </span>
+            <input id="autostart" type="checkbox" class="switch" role="switch">
+          </label>
+          <div class="row">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-folder"/></svg>
+            <span class="row-text">
+              <span class="row-label">Logs and settings</span>
+              <span class="row-desc path" id="dataPath"></span>
+            </span>
+            <button id="openData" class="btn" type="button">Open folder</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" style="--i:2" aria-labelledby="facH">
+        <div class="section-head"><h2 id="facH">Details</h2></div>
+        <div class="group facts">
+          <div class="row"><span class="row-label">Publisher</span><span class="fact">SpaceZ</span></div>
+          <div class="row"><span class="row-label">Identifier</span><span class="fact mono">com.spacez.aura</span></div>
+          <div class="row"><span class="row-label">Radio</span><span class="fact">Bluetooth, plus Wi-Fi fast path for big files</span></div>
+          <div class="row"><span class="row-label">Network</span><span class="fact">Nothing leaves your own devices</span></div>
+        </div>
+      </section>
+
+      <section class="section reveal" style="--i:3" aria-labelledby="appH">
+        <div class="section-head"><h2 id="appH">App</h2></div>
+        <div class="group">
+          <div class="row">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-refresh"/></svg>
+            <span class="row-text"><span class="row-label">Restart Aura</span><span class="row-desc">Quits and starts Aura again</span></span>
+            <button id="restartBtn" class="btn" type="button">Restart</button>
+          </div>
+          <div class="row">
+            <svg class="ic row-icon" aria-hidden="true"><use href="#i-power"/></svg>
+            <span class="row-text"><span class="row-label">Exit Aura</span><span class="row-desc">Stops auto-lock, Handoff and hands-free sign-in until you start Aura again</span></span>
+            <button id="exitBtn" class="btn" type="button">Exit</button>
+          </div>
+        </div>
+        <p class="section-note">Built with Tauri, RustCrypto and Segoe UI Variable. Thanks to the KDE Connect, LocalSend and Syncthing projects whose ideas shaped the protocol.</p>
+      </section>
+    </section>
+  </main>
+</div>
+
+<dialog id="dlg" class="dlg" aria-labelledby="dlgTitle">
+  <form method="dialog" class="dlg-body" id="dlgForm">
+    <h2 id="dlgTitle">Title</h2>
+    <div id="dlgText" class="dlg-text"></div>
+    <div id="dlgQr" class="dlg-qr" hidden></div>
+    <div id="dlgCode" class="dlg-code" hidden></div>
+    <div class="dlg-actions">
+      <button id="dlgCancel" class="btn" value="cancel" type="button">Cancel</button>
+      <button id="dlgOk" class="btn btn-primary" value="ok" type="button">OK</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="ui-icons.js"></script>
+<script src="app.js"></script>
+<script src="nowplaying.js"></script>
+</body>
+</html>

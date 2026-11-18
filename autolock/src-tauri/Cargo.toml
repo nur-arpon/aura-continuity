@@ -1,0 +1,47 @@
+[package]
+name = "continuity-autolock"
+version = "0.1.0"
+description = "Locks the PC when your phone/watch leave Bluetooth range. Bluetooth only, no network."
+edition = "2021"
+
+[lib]
+name = "autolock_lib"
+path = "src/lib.rs"
+
+[[bin]]
+name = "continuity-autolock"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon", "image-png"] }
+tauri-plugin-single-instance = "2"
+tauri-plugin-notification = "2"
+tauri-plugin-log = "2"
+log = "0.4"
+# Shared link + lock-event verification, reused by path (not copied).
+unlock-pc = { path = "../../unlock-stage1/pc" }
+watch-hint = { path = "../../unlock-watch/pc-patch/watch-hint" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+winreg = "0.56"
+windows = { version = "0.62", features = [
+  "Devices_Bluetooth", "Devices_Bluetooth_Advertisement", "Devices_Bluetooth_Rfcomm",
+  "Devices_Enumeration", "Devices_Radios", "Foundation", "Foundation_Collections",
+  "Win32_Foundation", "Win32_System_Com", "Win32_System_Shutdown", "Win32_System_RemoteDesktop",
+  "Win32_UI_Shell", "Win32_UI_WindowsAndMessaging", "Win32_Graphics_Gdi",
+  "Win32_UI_Input_KeyboardAndMouse", "Win32_System_SystemInformation",
+] }
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

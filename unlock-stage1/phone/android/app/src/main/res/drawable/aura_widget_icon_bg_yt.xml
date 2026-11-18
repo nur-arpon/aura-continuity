@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- the "Continue from laptop" icon when the PC was playing YouTube -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <gradient android:angle="315" android:startColor="#FFFF5A5A" android:endColor="#FFC81E1E"/>
+</shape>

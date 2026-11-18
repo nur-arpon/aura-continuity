@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Aura",
+  "version": "1.0.0",
+  "identifier": "com.spacez.aura",
+  "build": {
+    "frontendDist": "../ui"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [],
+    "security": {
+      "csp": "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; connect-src ipc: http://ipc.localhost"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "publisher": "SpaceZ",
+    "category": "Utility",
+    "shortDescription": "Aura: continuity for your PC. Phone and watch unlock, auto-lock and handoff in one tray app.",
+    "longDescription": "Aura: continuity for your PC. Phone and watch unlock, auto-lock and handoff in one tray app.",
+    "windows": { "nsis": { "installMode": "currentUser", "installerHooks": "nsis/hooks.nsh", "displayLanguageSelector": false }, "webviewInstallMode": { "type": "downloadBootstrapper" } },
+    "targets": ["nsis"],
+    "resources": { "resources/scrcpy/*": "resources/scrcpy/" },
+    "icon": ["icons/32x32.png", "icons/128x128.png", "icons/icon.ico"]
+  }
+}

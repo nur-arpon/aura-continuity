@@ -1,0 +1,50 @@
+# build output
+target/
+target-*/
+**/build/
+**/.gradle/
+**/.dart_tool/
+**/node_modules/
+**/.idea/
+*.iml
+.flutter-plugins*
+local.properties
+
+# binaries and installers (rebuild from source)
+dist/*.exe
+dist/*.bak
+**/live/
+*.apk
+*.aab
+*.dll
+*.pdb
+*.obj
+
+# secrets and device-specific data (never commit)
+*.jks
+*.keystore
+key.properties
+*.pem
+*.p12
+*.pfx
+*.env
+helper-key.bin
+pw.bin
+
+# logs
+*.log
+logs/
+
+**/dist/*.exe
+
+logs/
+
+# Publishing: upload keystore + passwords never go in git
+publish/keys/
+
+# Public repo: downloaded by tools/fetch-scrcpy.ps1, never committed
+aura-pc/src-tauri/resources/scrcpy/*.exe
+aura-pc/src-tauri/resources/scrcpy/*.dll
+aura-pc/src-tauri/resources/scrcpy/scrcpy-server
+dist/
+publish/keys/

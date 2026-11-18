@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Aura remote input</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  /* "Watch is controlling the mouse": a quiet pill at the top centre while remote input is active. Click-through; fades 3 s after the last input. */
+  html, body { margin: 0; height: 100%; background: transparent; overflow: hidden; user-select: none; -webkit-user-select: none; }
+  #pill { position: absolute; left: 50%; top: 4px; transform: translateX(-50%) translateY(-6px); max-width: calc(100% - 8px); box-sizing: border-box;
+    display: flex; align-items: center; gap: 9px; padding: 0 16px; height: 32px; border-radius: 999px; white-space: nowrap;
+    background: rgba(13,27,51,.92); color: #eaf1ff; border: 1px solid rgba(120,170,255,.3); box-shadow: 0 4px 16px rgba(0,0,0,.35);
+    font: 500 13px/1 var(--font-text, "Segoe UI Variable Text", "Segoe UI", sans-serif);
+    opacity: 0; transition: opacity .25s ease, transform .25s ease; }
+  #pill.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+  #pill.off { transition-duration: .6s; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #4f9bff; box-shadow: 0 0 8px #4f9bff; flex: none; }
+  @media (prefers-reduced-motion: reduce) { #pill, #pill.off { transition: opacity .1s linear; transform: translateX(-50%); } }
+</style>
+</head>
+<body>
+<div id="pill" role="status" aria-live="off"><span class="dot"></span><span id="t">Watch is controlling the mouse</span></div>
+<script>
+  const pill = document.getElementById("pill"), t = document.getElementById("t");
+  let timer = null;
+  function show(msg) {
+    if (msg) t.textContent = msg;
+    pill.classList.remove("off"); pill.classList.add("on");
+    clearTimeout(timer);
+    timer = setTimeout(() => { pill.classList.add("off"); pill.classList.remove("on"); }, 3000);
+  }
+  window.__TAURI__.event.listen("remote-input", (e) => show(e.payload));
+</script>
+</body>
+</html>
